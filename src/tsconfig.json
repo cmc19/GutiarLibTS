@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "outDir": "../out/out"
+    },
+    "filesGlob": [
+        "./**/*.ts"
+    ],
+    "files": [
+        "./Browser.ts",
+        "./Guitar.ts",
+        "./GuitarString.ts",
+        "./Index.ts",
+        "./MusicNote.ts",
+        "./Parser.ts",
+        "./Scale.ts",
+        "./Strum.ts",
+        "./TabDocument.ts",
+        "./Test/main.ts",
+        "./UI/BaseUI.ts",
+        "./UI/ChordView.ts",
+        "./UI/GuitarNeck.ts",
+        "./UI/Tab/TabCell.ts",
+        "./UI/Tab/TabColumn.ts",
+        "./UI/Tab/TabCommon.ts",
+        "./UI/TabEditor.ts",
+        "./UI/TabView.ts",
+        "./Util/Collections.ts",
+        "./Util/Decorators.ts",
+        "./Util/KeyManager.ts",
+        "./Util/SimpleEvent.ts"
+    ]
+}
