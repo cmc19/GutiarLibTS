@@ -17,4 +17,4 @@
 *.RTF	 diff=astextplain
 
 
-Scripts/* linguist-vendored
+Scripts/* linguist-vendored=true
