@@ -1,4 +1,4 @@
-import {MusicNoteName} from './MusicNote';
+import {MusicNoteName,noteMath} from './MusicNote';
 import {Guitar} from './Guitar';
 import {Strum} from './Strum';
 
@@ -9,10 +9,7 @@ export class Scale {
     }
     protected findStrings(note: MusicNoteName) {
         let g = this.guitar;
-        let results : StringLocation[] = [];
-        g.strings.forEach(str=> {
-
-        });
+        return g.getFretsWithNote(note);
     }
 }
 
@@ -21,13 +18,14 @@ export class MajorScale extends Scale {
         super(guitar);
     }
 
-    getChord(note:MusicNoteName): Strum {
-        throw "";
+    getChord(note: MusicNoteName) {
+        var major  = this.findStrings(note);
+        var p4 = this.findStrings(noteMath.getNoteDiff(note,4));
+        var p7 = this.findStrings(noteMath.getNoteDiff(note,7));
+        return {
+            major:major,
+            p4:p4,
+            p7:p7
+        }
     }
-}
-
-
-interface StringLocation {
-    stringIndex: number;
-    fretIndex: number;
 }

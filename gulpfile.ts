@@ -4,11 +4,13 @@
 /// <reference path="typings/gulp-concat/gulp-concat.d.ts" />
 /// <reference path="typings/gulp-sourcemaps/gulp-sourcemaps.d.ts" />
 /// <reference path="typings/Browserify/Browserify.d.ts" />
+/// <reference path="typings/glob/glob.d.ts" />
 
 import * as gulp from 'gulp';
 import * as ts from 'gulp-typescript';
 import * as browserify from 'browserify';
 import * as sm from 'gulp-sourcemaps';
+import * as glob from 'glob';
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 
@@ -60,3 +62,20 @@ function bundleify(id: number, file: string, outfile: string) {
 			.pipe(gulp.dest(''));
 	});
 }
+
+
+gulp.task('samples-bundle', ['build'], function() {
+	// set up the browserify instance on a task basis
+	var files = glob.sync('Samples/**/*.js');
+	var b = browserify({
+		entries: files,
+		debug: true,
+		paths: ['scripts'],
+
+	});
+
+	// return b.bundle()
+	// 	.pipe(source(outfile))
+	// 	.pipe(buffer())
+	// 	.pipe(gulp.dest(''));
+});

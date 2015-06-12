@@ -13,4 +13,4 @@
 1. install node
 2. install gulp
 2. Open command window in project directory
-3. Run `npm install typescript-require gulp-sourcemaps vinyl-source-stream vinyl-buffer`
+3. Run `npm install typescript-require gulp-sourcemaps vinyl-source-stream vinyl-buffer glob`

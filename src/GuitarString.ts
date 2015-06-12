@@ -20,20 +20,29 @@ export class GuitarString {
 
     public frequencyAtFret(fret: number) {
         var id = fret + this._note.id;
-        return getNote(id).frequency;;
+        return getNote(id).frequency;
     }
 
     public noteAtFret(fret: number): IMusicNoteAdvanced {
         var id = fret + this._note.id;
-        return getNote(id)
+        return getNote(id);
     }
 
-    public getFretsWithNote(note:MusicNoteName):IFretInfo[]{
-let results :IFretInfo[] = [];
+    public getFretsWithNote(noteName: MusicNoteName, fretCount: number): IFretInfo[] {
+        let results: IFretInfo[] = [];
 
+        for (let i = 0; i < fretCount; i++) {
+            let note = this.noteAtFret(i);
+            if (note.nameId == noteName) {
+                results.push({
+                    stringIndex: this.index,
+                    fretIndex: i,
+                    note: note
+                });
+            }
+        }
 
-
-return results;
+        return results;
     }
 
     toObject(): IGuitarString {
@@ -66,8 +75,12 @@ export interface IGuitarString {
     note: IMusicNoteAdvanced;
 }
 
-export interface IFretInfo{
-    stringIndex:number;
-    fretIndex:number;
-    note:IMusicNoteAdvanced;
+
+/**
+ * Info about a fret on a guitar
+ */
+export interface IFretInfo {
+    stringIndex: number;
+    fretIndex: number;
+    note: IMusicNoteAdvanced;
 }

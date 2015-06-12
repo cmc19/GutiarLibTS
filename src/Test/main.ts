@@ -9,8 +9,7 @@ var myGuitar = G.Guitar.GetNormalGuitar();
 
 var neck = new GuitarNeck(myGuitar, document.getElementById('gneck'));
 
-//neck.drawNoteLetters();
-neck.drawStrum(G.WellKnownChords.A);
+//neck.drawStrum(G.WellKnownChords.A);
 window['neck'] = neck;
 
 
@@ -51,7 +50,7 @@ module Tests {
         }
 
 
-        setInterval(repeat, 1000);
+        //setInterval(repeat, 1000);
     }
 
 
@@ -85,4 +84,10 @@ var td = window ['td'] = new G.TabDocument(myGuitar);
 
 td.addStrum(G.WellKnownChords.A);
 
+var m = window['m'] = new G.MajorScale(myGuitar);
 
+var results = m.getChord(G.MusicNoteName.A);
+
+results.major.forEach(x=>neck.addStrumMarker(x).attr('opacity',.50));
+results.p4.forEach(x=>neck.addStrumMarker(x).attr('fill','blue').attr('opacity',.50));
+results.p7.forEach(x=>neck.addStrumMarker(x).attr('fill','green').attr('opacity',.50));

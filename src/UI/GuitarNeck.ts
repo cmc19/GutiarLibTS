@@ -2,7 +2,7 @@
 /// <reference path="../Guitar"/>
 
 import * as R from "Raphael";
-import { GuitarString } from '../GuitarString';
+import { GuitarString,IFretInfo } from '../GuitarString';
 import {BaseUI, pathString, repeat} from './BaseUI';
 import {Strum} from '../Strum';
 import { Guitar } from "../Guitar";
@@ -279,15 +279,25 @@ export class GuitarNeck extends BaseUI {
         }
 
         let idx = 0;
+        var added = [];
         for (let p of s.positions) {
             if (p !== undefined) {
                 let point = this.getPointOfStringFret(idx, p);
-                let ele = d.circle(point.x, point.y, size.fingerPositionRadius).attr('fill', 'red');
+                let ele = d.circle(point.x, point.y, size.fingerPositionRadius)
+                    .attr('fill', 'red');
                 this._strumElements.push(ele);
+                added.push(ele);
             }
             idx++;
         }
+        return added;
+    }
 
+    addStrumMarker(fi:IFretInfo){
+        let arr = [];
+        repeat(this.stringCount, idx=> arr.push(undefined));
+        arr[fi.stringIndex] = fi.fretIndex;
+        return this.drawStrum( Strum.New(arr),false)[0];
     }
 
     removeBar() {
