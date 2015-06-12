@@ -1,5 +1,3 @@
-/// <reference path="C:\Users\Chad\AppData\Roaming\npm\node_modules\typescript\bin\lib.core.d.ts" />
-/// <reference path="C:\Users\Chad\AppData\Roaming\npm\node_modules\typescript\bin\lib.dom.d.ts" />
 
 
 
@@ -440,7 +438,7 @@ export class KeyManager {
 
         if (!activeSequences)
             this._nextExpectedAction = false;
-        
+
     }
 
 

@@ -44,6 +44,14 @@ Temporary Items
 
 node_modules
 
+#build output
 out
 
+#gulpfile output
 gulpfile.js
+
+#output file
+app.js
+
+#temparary directory created by gulp typescript
+tmp
