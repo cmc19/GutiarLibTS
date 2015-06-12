@@ -1,6 +1,7 @@
 import {MusicNoteName,noteMath} from './MusicNote';
 import {Guitar} from './Guitar';
 import {Strum} from './Strum';
+import {GuitarString,IFretInfo} from './GuitarString';
 
 export class Scale {
 

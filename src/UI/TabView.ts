@@ -6,7 +6,9 @@ import {BaseUI, pathString, repeat} from './BaseUI';
 import {TabViewSize} from './Tab/TabCommon';
 import {TabCell} from './Tab/TabCell';
 import {TabColumn} from './Tab/TabColumn';
-import {SimpleEvent} from '../Util/SimpleEvent';
+
+import {SimpleEvent, ISimpleEventBase, ISimpleEvent1, ISimpleEvent2, ISimpleEvent3}
+from '../Util/SimpleEvent';
 
 import {Strum} from '../Strum';
 export class TabView extends BaseUI {
@@ -26,7 +28,7 @@ export class TabView extends BaseUI {
     }
     public guitar: Guitar;
 
-    protected _columnAdded  = SimpleEvent.New<TabColumn>();
+    protected _columnAdded = SimpleEvent.New<TabColumn>();
 
     constructor(ele: HTMLElement, guitar: Guitar) {
         super(ele);
@@ -97,7 +99,7 @@ export class TabView extends BaseUI {
 
     columns: TabColumn[] = [];
 
-    private _addColumn(c:TabColumn){
+    private _addColumn(c: TabColumn) {
         this.columns.push(c);
         this._columnAdded.trigger(c);
     }
@@ -126,7 +128,7 @@ export class TabView extends BaseUI {
         this.columns.forEach(x=> x.unselectAll());
     }
 
-    toArray(): string[][]{
+    toArray(): string[][] {
         let ret: string[][] = [];
 
         this.columns.forEach(function(c) {
@@ -140,7 +142,7 @@ export class TabView extends BaseUI {
         return ret;
     }
 
-    toString(){
+    toString() {
         return "[object TabView]";
     }
 }
