@@ -1,7 +1,4 @@
 import * as G from '../../out/Index';
-
-
-
 import '../../out/Browser';
 
 
@@ -17,10 +14,30 @@ console.log(scale);
 function buildChord(name: G.MusicNoteName) {
     let chordResults = scale.getChord(name);
     console.log(chordResults);
+
+    let div = document.createElement('div');
+    document.body.appendChild(div);
+
+    let header = document.createElement('h1');
+    header.innerText =  name;
+    div.style .border = 'solid 1px';
+    div.appendChild(header);
+
+    let neck = new G.GuitarNeck(myGuitar,div);
+    chordResults.major.forEach(x=>neck.addStrumMarker(x).attr('opacity',.50));
+    chordResults.p4.forEach(x=>neck.addStrumMarker(x).attr('fill','blue').attr('opacity',.50));
+    chordResults.p7.forEach(x=>neck.addStrumMarker(x).attr('fill','green').attr('opacity',.50));
 }
 
 console.log('buildChord');
 
 buildChord(G.MusicNoteName.C);
+buildChord(G.MusicNoteName.D);
+buildChord(G.MusicNoteName.E);
+buildChord(G.MusicNoteName.F);
+buildChord(G.MusicNoteName.G);
+buildChord(G.MusicNoteName.A);
+buildChord(G.MusicNoteName.B);
+
 
 //
