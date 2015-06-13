@@ -87,28 +87,39 @@ gulp.task('samples-build', ['build'], function() {
 });
 
 gulp.task('samples-bundle', ['samples-build'], function() {
-    const taskPath = ['Samples/**/*.s.js'];
+    const taskPath = ['Samples/**/*.js'];
 
-    var bundledStream = through();
 
-bundledStream
-  .pipe(source('app.js'))
-  .pipe(buffer())
-  .pipe(gulp.dest('Samples/dist/'));
+    var files = glob.sync(taskPath[0]);
 
-    globby(taskPath, function(err, entries) {
-       if (err) {
-         bundledStream.emit('error', err);
-         return;
-       }
+    files.forEach(filepath => {
+        var bundledStream = through();
+        var fileParts = filepath.split('/');
+        var directory = fileParts.slice(0,  fileParts.length -1).join('/');
+        var filename = fileParts[fileParts.length -1].replace('.js','.out.js');
+        if(filename == 'app.js') return;
 
-       var b = browserify({
-           entries: [entries],
-           debug: true,
-           paths: ['scripts'],
+        bundledStream
+            .pipe(source(filename))
+            .pipe(buffer())
+            .pipe(gulp.dest(directory));
 
-       });
-       b.bundle().pipe(bundledStream);
-     });
+        globby(taskPath, function(err, entries) {
+            if (err) {
+                bundledStream.emit('error', err);
+                return;
+            }
+
+            var b = browserify({
+                entries: [filepath],
+                debug: true,
+                paths: ['scripts'],
+
+            });
+            b.bundle().pipe(bundledStream);
+        });
+    });
+
+
 
 });
