@@ -59,6 +59,9 @@ export module noteMath {
         var x = id + (12 * 4) + 9 + 1;
         return Math.floor(x / 12);
     }
+    export function getNoteNameAsString(name:MusicNoteName){
+        return MusicNotes.filter(x=>x.nameId == name)[0].name;
+    }
 }
 
 //Build music notes array.

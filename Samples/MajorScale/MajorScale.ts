@@ -19,7 +19,7 @@ function buildChord(name: G.MusicNoteName) {
     document.body.appendChild(div);
 
     let header = document.createElement('h1');
-    header.innerText =  name;
+    header.innerText = G.noteMath.getNoteNameAsString( name);
     div.style .border = 'solid 1px';
     div.appendChild(header);
 
@@ -31,13 +31,15 @@ function buildChord(name: G.MusicNoteName) {
 
 console.log('buildChord');
 
-buildChord(G.MusicNoteName.C);
 buildChord(G.MusicNoteName.D);
+buildChord(G.MusicNoteName.A);
 buildChord(G.MusicNoteName.E);
+
+buildChord(G.MusicNoteName.C);
 buildChord(G.MusicNoteName.F);
 buildChord(G.MusicNoteName.G);
-buildChord(G.MusicNoteName.A);
 buildChord(G.MusicNoteName.B);
+
 
 
 //
