@@ -5,6 +5,7 @@
 /// <reference path="typings/gulp-sourcemaps/gulp-sourcemaps.d.ts" />
 /// <reference path="typings/Browserify/Browserify.d.ts" />
 /// <reference path="typings/glob/glob.d.ts" />
+/// <reference path="typings/gulp-rename/gulp-rename.d.ts" />
 
 import * as gulp from 'gulp';
 import * as ts from 'gulp-typescript';
@@ -13,15 +14,25 @@ import * as sm from 'gulp-sourcemaps';
 import * as glob from 'glob';
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var globby = require('globby');
+var through = require('through2');
 
+var transform = require('vinyl-transform');
+
+import rename = require('gulp-rename');
 
 var tsProject = ts.createProject({
-    sortOutput: true,
     module: 'commonjs',
     target: 'ES5',
     typescript: require('typescript'),
     declarationFiles: true
-    //sourceRoot:'./src'
+});
+
+var tsProject2 = ts.createProject({
+    module: 'commonjs',
+    target: 'ES5',
+    typescript: require('typescript'),
+    declarationFiles: true
 });
 
 
@@ -31,14 +42,14 @@ gulp.task('watch', ['default'], () => {
 });
 
 gulp.task("build", function() {
-    var g =  gulp
+    var g = gulp
         .src(['src/**/*.ts'])
         .pipe(sm.init())
         .pipe(ts(tsProject));
-		
-		g.dts.pipe(gulp.dest('out'));
 
-		g.js
+    g.dts.pipe(gulp.dest('out'));
+
+    g.js
         .pipe(sm.write({
             includeContext: true,
             sourceRoot: 'src'
@@ -52,7 +63,7 @@ bundleify(1, 'out/Test/main.js', 'Test/main.js');
 
 var idx = 0;
 function bundleify(id: number, file: string, outfile: string) {
-    gulp.task('bundle' + id, ['build'], function() {
+    gulp.task(`bundle${id}`, ['build'], function() {
         // set up the browserify instance on a task basis
         var b = browserify({
             entries: [file],
@@ -69,18 +80,35 @@ function bundleify(id: number, file: string, outfile: string) {
 }
 
 
-gulp.task('samples-bundle', ['build'], function() {
-    // set up the browserify instance on a task basis
-    var files = glob.sync('Samples/**/*.js');
-    var b = browserify({
-        entries: files,
-        debug: true,
-        paths: ['scripts'],
+gulp.task('samples-build', ['build'], function() {
+    gulp.src(['samples/**/*.ts'])
+        .pipe(ts(tsProject2)).js
+        .pipe(gulp.dest('Samples'));
+});
 
-    });
+gulp.task('samples-bundle', ['samples-build'], function() {
+    const taskPath = ['Samples/**/*.s.js'];
 
-    // return b.bundle()
-    // 	.pipe(source(outfile))
-    // 	.pipe(buffer())
-    // 	.pipe(gulp.dest(''));
+    var bundledStream = through();
+
+bundledStream
+  .pipe(source('app.js'))
+  .pipe(buffer())
+  .pipe(gulp.dest('Samples/dist/'));
+
+    globby(taskPath, function(err, entries) {
+       if (err) {
+         bundledStream.emit('error', err);
+         return;
+       }
+
+       var b = browserify({
+           entries: [entries],
+           debug: true,
+           paths: ['scripts'],
+
+       });
+       b.bundle().pipe(bundledStream);
+     });
+
 });
