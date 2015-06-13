@@ -7,11 +7,11 @@
 /// <reference path="typings/glob/glob.d.ts" />
 /// <reference path="typings/gulp-rename/gulp-rename.d.ts" />
 
-import * as gulp from 'gulp';
-import * as ts from 'gulp-typescript';
-import * as browserify from 'browserify';
-import * as sm from 'gulp-sourcemaps';
-import * as glob from 'glob';
+import * as gulp        from 'gulp';
+import * as ts          from 'gulp-typescript';
+import * as browserify  from 'browserify';
+import * as sm          from 'gulp-sourcemaps';
+import * as glob        from 'glob';
 
 
 var source = require('vinyl-source-stream');
@@ -66,7 +66,6 @@ bundleify(0, 'out/Index.js', 'app.js');
 bundleify(1, 'out/Test/main.js', 'Test/main.js');
 
 
-var idx = 0;
 function bundleify(id: number, file: string, outfile: string) {
     gulp.task(`bundle${id}`, ['build'], function() {
         // set up the browserify instance on a task basis
@@ -86,7 +85,7 @@ function bundleify(id: number, file: string, outfile: string) {
 
 
 gulp.task('samples-build', ['build'], function() {
-    gulp.src(['samples/**/*.ts'])
+    return gulp.src(['samples/**/*.ts'])
         .pipe(ts(tsProject2)).js
         .pipe(gulp.dest('Samples'));
 });
@@ -110,7 +109,7 @@ gulp.task('samples-bundle', ['samples-build'], function() {
             return;
         }
 
-        // console.log(`dir: ${directory} filename: ${filename}`);
+         console.log(`dir: ${directory} filename: ${filename}`);
 
         bundledStream
             .pipe(source(filename))
