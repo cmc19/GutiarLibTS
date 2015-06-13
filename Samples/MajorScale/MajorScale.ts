@@ -27,6 +27,7 @@ function buildChord(name: G.MusicNoteName) {
     div.appendChild(header);
 
     header.style.padding = '0px';
+    header.style.paddingLeft = '30px';
     header.style.margin = '0px';
 
     let neck = new G.GuitarNeck(myGuitar, div);
@@ -39,12 +40,13 @@ console.log('buildChord');
 
 buildChord(G.MusicNoteName.D);
 buildChord(G.MusicNoteName.A);
+buildChord(G.MusicNoteName.G);
 buildChord(G.MusicNoteName.E);
 
 buildChord(G.MusicNoteName.C);
 buildChord(G.MusicNoteName.F);
-buildChord(G.MusicNoteName.G);
 buildChord(G.MusicNoteName.B);
+
 
 
 //
