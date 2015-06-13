@@ -19,7 +19,7 @@ export class MajorScale extends Scale {
         super(guitar);
     }
 
-    getChord(note: MusicNoteName) {
+    getFretInfo(note: MusicNoteName) {
         var major  = this.findStrings(note);
         var p4 = this.findStrings(noteMath.getNoteDiff(note,4));
         var p7 = this.findStrings(noteMath.getNoteDiff(note,7));

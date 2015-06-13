@@ -86,7 +86,7 @@ td.addStrum(G.WellKnownChords.A);
 
 var m = window['m'] = new G.MajorScale(myGuitar);
 
-var results = m.getChord(G.MusicNoteName.A);
+var results = m.getFretInfo(G.MusicNoteName.A);
 
 results.major.forEach(x=>neck.addStrumMarker(x).attr('opacity',.50));
 results.p4.forEach(x=>neck.addStrumMarker(x).attr('fill','blue').attr('opacity',.50));
