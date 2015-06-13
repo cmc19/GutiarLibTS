@@ -21,6 +21,16 @@ function buildChord(name) {
     chordResults.major.forEach(function (x) { return neck.addStrumMarker(x).attr('opacity', .8); });
     chordResults.p4.forEach(function (x) { return neck.addStrumMarker(x).attr('fill', 'blue').attr('opacity', .60); });
     chordResults.p7.forEach(function (x) { return neck.addStrumMarker(x).attr('fill', 'green').attr('opacity', .33); });
+    var strums = scale.getStrumList(name);
+    strums.forEach(function (strum) {
+        var strumDiv = document.createElement('div');
+        strumDiv.classList.add('strumDiv');
+        div.appendChild(strumDiv);
+        var chord = new G.ChordView(strum, strumDiv);
+    });
+    var clearFix = document.createElement('div');
+    clearFix.classList.add('clearfix');
+    div.appendChild(clearFix);
 }
 console.log('buildChord');
 buildChord(G.MusicNoteName.D);
