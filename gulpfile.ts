@@ -12,6 +12,8 @@ import * as ts from 'gulp-typescript';
 import * as browserify from 'browserify';
 import * as sm from 'gulp-sourcemaps';
 import * as glob from 'glob';
+
+
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var globby = require('globby');
@@ -38,7 +40,10 @@ var tsProject2 = ts.createProject({
 
 gulp.task('default', ['bundle0', 'bundle1']);
 gulp.task('watch', ['default'], () => {
+
     gulp.watch(['src/**/*.ts'], ['default']);
+    gulp.watch(['Samples/**/*.ts'], ['samples-bundle']);
+
 });
 
 gulp.task("build", function() {
@@ -95,9 +100,17 @@ gulp.task('samples-bundle', ['samples-build'], function() {
     files.forEach(filepath => {
         var bundledStream = through();
         var fileParts = filepath.split('/');
-        var directory = fileParts.slice(0,  fileParts.length -1).join('/');
-        var filename = fileParts[fileParts.length -1].replace('.js','.out.js');
-        if(filename == 'app.js') return;
+        var directory = fileParts.slice(0, fileParts.length - 1).join('/');
+        var filename = fileParts[fileParts.length - 1].replace('.js', '.out.js');
+
+        if (filename == 'app.js')
+            return;
+
+        if (filename.indexOf('.out.out.') !== -1) {
+            return;
+        }
+
+        // console.log(`dir: ${directory} filename: ${filename}`);
 
         bundledStream
             .pipe(source(filename))
