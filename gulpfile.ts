@@ -38,15 +38,15 @@ var tsProject2 = ts.createProject({
 });
 
 
-gulp.task('default', ['bundle0', 'bundle1']);
+gulp.task('default', ['samples-bundle','bundle1', 'bundle1']);
 gulp.task('watch', ['default'], () => {
 
-    gulp.watch(['src/**/*.ts'], ['default']);
+    gulp.watch(['src/**/*.ts'], ['samples-bundle']);
     gulp.watch(['Samples/**/*.ts'], ['samples-bundle']);
 
 });
 
-gulp.task("build", function() {
+gulp.task("build",['clean'], function() {
     var g = gulp
         .src(['src/**/*.ts'])
         .pipe(sm.init())
@@ -54,7 +54,7 @@ gulp.task("build", function() {
 
     g.dts.pipe(gulp.dest('out'));
 
-    g.js
+return    g.js
         .pipe(sm.write({
             includeContext: true,
             sourceRoot: 'src'
@@ -83,6 +83,10 @@ function bundleify(id: number, file: string, outfile: string) {
     });
 }
 
+gulp.task('clean',function(cb){
+    var del = require('del');
+    del(['samples/**/*.js','out/**/*'],cb);
+})
 
 gulp.task('samples-build', ['build'], function() {
     return gulp.src(['samples/**/*.ts'])
