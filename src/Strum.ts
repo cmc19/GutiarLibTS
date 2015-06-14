@@ -98,7 +98,7 @@ export class Strum {
 
         let skipCount = this.skipCount;
 
-        ret-= Math.pow(skipCount,3) * 10;
+        ret-= Math.pow(skipCount,4) * 10;
         return ret;
     }
 
