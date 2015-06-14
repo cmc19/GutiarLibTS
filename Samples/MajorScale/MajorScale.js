@@ -25,6 +25,8 @@ function buildChord(name) {
     var strums = scale.getStrumList(name);
     strums = strums.filter(function (x) { return x.rate() > 0; });
     strums = G.util.orderBy(strums, function (x) { return 0 - x.rate(); });
+    //Comment out below to include chords that skip string. 
+    strums = strums.filter(function (x) { return x.skipCount == 0; });
     strums.forEach(function (strum) {
         var strumDiv = document.createElement('div');
         strumDiv.classList.add('strumDiv');
@@ -34,7 +36,7 @@ function buildChord(name) {
         var div2 = document.createElement('div');
         strumDiv.appendChild(div2);
         var chord = new G.ChordView(strum, div2);
-        div2.addEventListener('click', function () {
+        strumDiv.addEventListener('click', function () {
             neck.clearStrum();
             neck.drawStrum(strum);
         });

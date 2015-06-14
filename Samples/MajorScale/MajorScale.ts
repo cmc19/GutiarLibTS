@@ -16,7 +16,7 @@ console.log(scale);
 
 function buildChord(name: G.MusicNoteName) {
 
-    console.time( G.noteMath.getNoteNameAsString(name));
+    console.time(G.noteMath.getNoteNameAsString(name));
     let chordResults = scale.getFretInfo(name);
     console.log(chordResults);
 
@@ -40,7 +40,11 @@ function buildChord(name: G.MusicNoteName) {
     let strums = scale.getStrumList(name);
 
     strums = strums.filter(x=> x.rate() > 0);
-    strums = G.util.orderBy(strums, x=> 0-  x.rate());
+    strums = G.util.orderBy(strums, x=> 0 - x.rate());
+    
+    //Comment out below to include chords that skip string. 
+    strums = strums.filter(x=>x.skipCount == 0 );
+    
     strums.forEach(strum=> {
         let strumDiv = document.createElement('div');
         strumDiv.classList.add('strumDiv');
@@ -52,7 +56,7 @@ function buildChord(name: G.MusicNoteName) {
         strumDiv.appendChild(div2);
         let chord = new G.ChordView(strum, div2);
 
-        div2.addEventListener('click',()=>{
+        strumDiv.addEventListener('click', () => {
             neck.clearStrum();
             neck.drawStrum(strum);
         })
@@ -63,7 +67,7 @@ function buildChord(name: G.MusicNoteName) {
     var clearFix = document.createElement('div');
     clearFix.classList.add('clearfix');
     div.appendChild(clearFix);
-    console.timeEnd( G.noteMath.getNoteNameAsString(name));
+    console.timeEnd(G.noteMath.getNoteNameAsString(name));
 }
 
 console.log('buildChord');
@@ -81,7 +85,7 @@ window['buildChord'] = buildChord;
 window['buildChordTest'] = () => {
     console.profile();
     buildChord(G.MusicNoteName.D);
-console.profileEnd();
+    console.profileEnd();
 }
 
 
