@@ -7,7 +7,7 @@ export class Strum {
         return Math.max(...this.positions.filter(x=> x !== undefined));
     }
     get minFret(): number {
-        return Math.min(...this.positions.filter(x=> x !== undefined && x!== 0));
+        return Math.min(...this.positions.filter(x=> x !== undefined && x !== 0));
     }
 
     get stringsUsed(): number {
@@ -30,6 +30,16 @@ export class Strum {
         });
         return result;
     }
+
+    get lastUsedStringIndex(): number {
+        let result = null;
+
+        for (let i = this.stringCount - 1; i >= 0; i--) {
+            if (this.positions[i] !== undefined) return i;
+        }
+        return result;
+    }
+
     positions: number[];
 
     constructor() { }
@@ -62,15 +72,33 @@ export class Strum {
         return a;
     }
 
+    get skipCount():number{
+        let ret =0;
+        for (let i = this.firstUsedStringIndex; i <= this.lastUsedStringIndex; i++) {
+            if(this.positions[i] === undefined) ret++;
+        }
+        return ret;
+    }
+
     rate(): number {
         let ret = 100;
 
         //too far appart.
         if (this.maxFretDistence > 5) ret -= 1000;
 
-//all at end of neck
-if(this.maxFret < 4) ret+= 100;
+        //all at end of neck
+        if (this.maxFret < 4) ret += 100;
 
+
+        //Less strings is easier.
+        ret += (this.stringCount - this.stringsUsed) * 5;
+
+        //bonus for open strings
+        ret+= this.positions.filter(x=>x == 0).length;
+
+        let skipCount = this.skipCount;
+
+        ret-= (skipCount^3) * 10;
         return ret;
     }
 
