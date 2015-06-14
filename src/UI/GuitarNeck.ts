@@ -2,7 +2,7 @@
 /// <reference path="../Guitar"/>
 
 import * as R from "Raphael";
-import { GuitarString,IFretInfo } from '../GuitarString';
+import { GuitarString, IFretInfo } from '../GuitarString';
 import {BaseUI, pathString, repeat} from './BaseUI';
 import {Strum} from '../Strum';
 import { Guitar } from "../Guitar";
@@ -97,7 +97,8 @@ export class GuitarNeck extends BaseUI {
         this.drawStrings();
         this.drawFrets();
         this.drawFretBubbles();
-        this.drawNoteLetters();
+        if (this.noteLettersDrawn == true)
+            this.drawNoteLetters();
         this.resize();
     }
 
@@ -203,11 +204,17 @@ export class GuitarNeck extends BaseUI {
      * Makes all note letters visible
      */
     showAllNoteLetters() {
+        if (this.noteLettersDrawn == false) {
+            this.noteLettersDrawn = true;
+            this.drawNoteLetters();
+        }
         let s = this.size;
         let nls = this._noteLettersSet;
         nls.attr({ opacity: 1 });
         //    nls.animate({ opacity: 1 }, s.opacityToggleTime);
     }
+
+    noteLettersDrawn = false;
 
     /**
      * Draw all note letters on fret board
@@ -293,11 +300,11 @@ export class GuitarNeck extends BaseUI {
         return added;
     }
 
-    addStrumMarker(fi:IFretInfo){
+    addStrumMarker(fi: IFretInfo) {
         let arr = [];
         repeat(this.stringCount, idx=> arr.push(undefined));
         arr[fi.stringIndex] = fi.fretIndex;
-        return this.drawStrum( Strum.New(arr),false)[0];
+        return this.drawStrum(Strum.New(arr), false)[0];
     }
 
     removeBar() {
