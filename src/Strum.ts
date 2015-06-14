@@ -3,6 +3,33 @@ import {Guitar} from './Guitar';
 
 export class Strum {
     get stringCount(): number { return this.positions.length; }
+    get maxFret(): number {
+        return Math.max(...this.positions.filter(x=> x !== undefined));
+    }
+    get minFret():number{
+        return Math.min(...this.positions.filter(x=>x !== undefined));
+    }
+
+    get stringsUsed() : number{
+        return this.positions.filter(x=>x !== undefined).length;
+    }
+
+    get maxFretDistence(): number{
+        return this.maxFret - this.minFret;
+    }
+
+    get firstUsedStringIndex():number{
+        let idx = 0;
+        let result = null;
+        this.positions.forEach(x=>{
+            if(result!== null) return;
+            if(x!== undefined) {
+                result = idx;
+            }
+            idx++;
+        });
+        return result;
+    }
     positions: number[];
 
     constructor() { }
@@ -33,6 +60,12 @@ export class Strum {
             idx++;
         }
         return a;
+    }
+
+    rate():number{
+let ret = 100;
+if(this.maxFretDistence > 5) ret-=1000;
+return ret;
     }
 
     static New(fretPositions: number[]) {

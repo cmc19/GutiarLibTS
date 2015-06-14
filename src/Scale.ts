@@ -2,7 +2,7 @@ import {MusicNoteName, noteMath} from './MusicNote';
 import {Guitar} from './Guitar';
 import {Strum} from './Strum';
 import {GuitarString, IFretInfo} from './GuitarString';
-
+import {findAllPossibleCombos} from './Util/Array';
 export class Scale {
 
     constructor(protected guitar: Guitar) {
@@ -34,9 +34,10 @@ export class MajorScale extends Scale {
         var results: Strum[] = [];
         let info = this.getFretInfo(note);
 
-        info.major = info.major.filter(x=> x.fretIndex <= 5);
-        info.p4 = info.p4.filter(x=> x.fretIndex <= 5);
-        info.p7 = info.p7.filter(x=> x.fretIndex <= 5);
+        let max = 10;
+        info.major = info.major.filter(x=> x.fretIndex <= 10);
+        info.p4 = info.p4.filter(x=> x.fretIndex <= 10);
+        info.p7 = info.p7.filter(x=> x.fretIndex <= 10);
 
         //2 major
         let majors = findAllPossibleCombos(info.major, 2, 2);
@@ -57,16 +58,16 @@ export class MajorScale extends Scale {
                 });
             });
 
-let p7Combos = findAllPossibleCombos(info.p7,2,2);
-p7Combos.forEach(p7=>{
-    let fic = majorFic.clone();
-    if (fic.addArray(p7) == false) return;
-    info.p4.forEach(p4=> {
-        let f = fic.clone();
-        if (f.add(p4) == false) return;
-        results.push(f.getChord(this.guitar.stringCount));
-    });
-});
+            let p7Combos = findAllPossibleCombos(info.p7, 2, 2);
+            p7Combos.forEach(p7=> {
+                let fic = majorFic.clone();
+                if (fic.addArray(p7) == false) return;
+                info.p4.forEach(p4=> {
+                    let f = fic.clone();
+                    if (f.add(p4) == false) return;
+                    results.push(f.getChord(this.guitar.stringCount));
+                });
+            });
 
 
         });
@@ -77,7 +78,7 @@ p7Combos.forEach(p7=>{
     }
 }
 
- export class StrumBuilder {
+export class StrumBuilder {
     private list: IFretInfo[] = [];
 
     add(f: IFretInfo) {
@@ -122,28 +123,4 @@ p7Combos.forEach(p7=>{
 
         return Strum.New(results);
     }
-}
-
-
-function findAllPossibleCombos<T>(a: T[], min: number, max: number = null): T[][] {
-    if (max === null) max = a.length;
-    max += 1;
-    var fn = function(n, src, got, all) {
-        if (n == 0) {
-            if (got.length > 0) {
-                all[all.length] = got;
-            }
-            return;
-        }
-        for (var j = 0; j < src.length; j++) {
-            fn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
-        }
-        return;
-    }
-    var all = [];
-    for (var i = min; i < max; i++) {
-        fn(i, a, [], all);
-    }
-    //all.push(a);
-    return all;
 }

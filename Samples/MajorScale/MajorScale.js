@@ -22,11 +22,16 @@ function buildChord(name) {
     chordResults.p4.forEach(function (x) { return neck.addStrumMarker(x).attr('fill', 'blue').attr('opacity', .60); });
     chordResults.p7.forEach(function (x) { return neck.addStrumMarker(x).attr('fill', 'green').attr('opacity', .33); });
     var strums = scale.getStrumList(name);
-    strums.forEach(function (strum) {
+    strums.filter(function (x) { return x.rate() > 0; }).forEach(function (strum) {
         var strumDiv = document.createElement('div');
         strumDiv.classList.add('strumDiv');
+        var span = document.createElement('span');
+        span.innerText = strum.rate().toString();
         div.appendChild(strumDiv);
-        var chord = new G.ChordView(strum, strumDiv);
+        var div2 = document.createElement('div');
+        strumDiv.appendChild(div2);
+        var chord = new G.ChordView(strum, div2);
+        strumDiv.appendChild(span);
     });
     var clearFix = document.createElement('div');
     clearFix.classList.add('clearfix');

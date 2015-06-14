@@ -24,7 +24,9 @@ export class ChordView extends BaseUI {
     }
 
     private get fretCount(): number {
-        return 5;
+        let r =  Math.max( 5, this.strum.maxFret);
+    //    console.log(r);
+        return r + 1 /* open fret */;
     }
 
     constructor(private strum: Strum, ele: HTMLElement = null) {

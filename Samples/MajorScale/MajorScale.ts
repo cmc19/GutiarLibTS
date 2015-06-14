@@ -37,12 +37,18 @@ function buildChord(name: G.MusicNoteName) {
 
     let strums = scale.getStrumList(name);
 
-    strums.forEach(strum=>{
+    strums.filter(x=>x.rate() > 0).forEach(strum=>{
         let strumDiv = document.createElement('div');
-        strumDiv.classList.add('strumDiv')
+        strumDiv.classList.add('strumDiv');
+        let span = document.createElement('span');
+        span.innerText  = strum.rate().toString();
         div.appendChild(strumDiv);
 
-        let chord = new G.ChordView(strum, strumDiv);
+let div2 = document.createElement('div');
+strumDiv.appendChild(div2);
+        let chord = new G.ChordView(strum, div2);
+        strumDiv.appendChild(span);
+
     });
 
     var clearFix = document.createElement('div');

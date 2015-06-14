@@ -27,6 +27,7 @@
         "./UI/TabEditor.ts",
         "./UI/TabView.ts",
         "./UI/UI.ts",
+        "./Util/Array.ts",
         "./Util/Collections.ts",
         "./Util/Decorators.ts",
         "./Util/KeyManager.ts",
