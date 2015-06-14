@@ -72,10 +72,10 @@ export class Strum {
         return a;
     }
 
-    get skipCount():number{
-        let ret =0;
+    get skipCount(): number {
+        let ret = 0;
         for (let i = this.firstUsedStringIndex; i <= this.lastUsedStringIndex; i++) {
-            if(this.positions[i] === undefined) ret++;
+            if (this.positions[i] === undefined) ret++;
         }
         return ret;
     }
@@ -94,11 +94,11 @@ export class Strum {
         ret += (this.stringCount - this.stringsUsed) * 5;
 
         //bonus for open strings
-        ret+= this.positions.filter(x=>x == 0).length;
+        ret += this.positions.filter(x=> x == 0).length;
 
         let skipCount = this.skipCount;
 
-        ret-= Math.pow(skipCount,4) * 10;
+        ret -= Math.pow(skipCount, 4) * 15;
         return ret;
     }
 

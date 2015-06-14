@@ -34,6 +34,10 @@ function buildChord(name) {
         var div2 = document.createElement('div');
         strumDiv.appendChild(div2);
         var chord = new G.ChordView(strum, div2);
+        div2.addEventListener('click', function () {
+            neck.clearStrum();
+            neck.drawStrum(strum);
+        });
         strumDiv.appendChild(span);
     });
     var clearFix = document.createElement('div');

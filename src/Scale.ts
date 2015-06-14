@@ -40,25 +40,25 @@ export class MajorScale extends Scale {
         info.p7 = info.p7.filter(x=> x.fretIndex <= 10);
 
         //2 major
-        let majors = findAllPossibleCombos(info.major, 2, 2);
+        let majors = findAllPossibleCombos(info.major, 2, 3);
+        let p7Combos = findAllPossibleCombos(info.p7, 1, 2);
 
         majors.forEach(m=> {
             let majorFic = new StrumBuilder();
             if (majorFic.addArray(m) == false) return;
 
 
-            info.p7.forEach(p7=> {
-                let fic = majorFic.clone();
-                if (fic.add(p7) == false) return;
+            // info.p7.forEach(p7=> {
+            //     let fic = majorFic.clone();
+            //     if (fic.add(p7) == false) return;
+            //
+            //     info.p4.forEach(p4=> {
+            //         let f = fic.clone();
+            //         if (f.add(p4) == false) return;
+            //         results.push(f.getChord(this.guitar.stringCount));
+            //     });
+            // });
 
-                info.p4.forEach(p4=> {
-                    let f = fic.clone();
-                    if (f.add(p4) == false) return;
-                    results.push(f.getChord(this.guitar.stringCount));
-                });
-            });
-
-            let p7Combos = findAllPossibleCombos(info.p7, 2, 2);
             p7Combos.forEach(p7=> {
                 let fic = majorFic.clone();
                 if (fic.addArray(p7) == false) return;
@@ -68,11 +68,9 @@ export class MajorScale extends Scale {
                     results.push(f.getChord(this.guitar.stringCount));
                 });
             });
-
-
         });
 
-        console.log(majors);
+        //    console.log(majors);
 
         return results;
     }

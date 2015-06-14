@@ -32,7 +32,7 @@ function buildChord(name: G.MusicNoteName) {
     header.style.paddingLeft = '30px';
     header.style.margin = '0px';
 
-    let neck = new G.GuitarNeck(myGuitar, div);
+    var neck = new G.GuitarNeck(myGuitar, div);
     chordResults.major.forEach(x=> neck.addStrumMarker(x).attr('opacity', .8));
     chordResults.p4.forEach(x=> neck.addStrumMarker(x).attr('fill', 'blue').attr('opacity', .60));
     chordResults.p7.forEach(x=> neck.addStrumMarker(x).attr('fill', 'green').attr('opacity', .33));
@@ -51,6 +51,11 @@ function buildChord(name: G.MusicNoteName) {
         let div2 = document.createElement('div');
         strumDiv.appendChild(div2);
         let chord = new G.ChordView(strum, div2);
+
+        div2.addEventListener('click',()=>{
+            neck.clearStrum();
+            neck.drawStrum(strum);
+        })
         strumDiv.appendChild(span);
 
     });
