@@ -5,9 +5,11 @@
         "outDir": "../out/out"
     },
     "filesGlob": [
+        "../typings/lodash/lodash.d.ts",
         "./**/*.ts"
     ],
     "files": [
+        "../typings/lodash/lodash.d.ts",
         "./Browser.ts",
         "./Guitar.ts",
         "./GuitarString.ts",

@@ -1,3 +1,9 @@
+/// <reference path="../../typings/lodash/lodash.d.ts"/>
+import {sortBy} from 'lodash';
+export function orderBy<T>(arr: T[], fn: (x: T) => any): T[] {
+    return sortBy(arr, x=> fn(x));
+}
+
 export function findAllPossibleCombos<T>(a: T[], min: number, max: number = null): T[][] {
     if (max === null) max = a.length;
     max += 1;

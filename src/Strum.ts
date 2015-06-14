@@ -6,24 +6,24 @@ export class Strum {
     get maxFret(): number {
         return Math.max(...this.positions.filter(x=> x !== undefined));
     }
-    get minFret():number{
-        return Math.min(...this.positions.filter(x=>x !== undefined));
+    get minFret(): number {
+        return Math.min(...this.positions.filter(x=> x !== undefined && x!== 0));
     }
 
-    get stringsUsed() : number{
-        return this.positions.filter(x=>x !== undefined).length;
+    get stringsUsed(): number {
+        return this.positions.filter(x=> x !== undefined).length;
     }
 
-    get maxFretDistence(): number{
+    get maxFretDistence(): number {
         return this.maxFret - this.minFret;
     }
 
-    get firstUsedStringIndex():number{
+    get firstUsedStringIndex(): number {
         let idx = 0;
         let result = null;
-        this.positions.forEach(x=>{
-            if(result!== null) return;
-            if(x!== undefined) {
+        this.positions.forEach(x=> {
+            if (result !== null) return;
+            if (x !== undefined) {
                 result = idx;
             }
             idx++;
@@ -62,10 +62,16 @@ export class Strum {
         return a;
     }
 
-    rate():number{
-let ret = 100;
-if(this.maxFretDistence > 5) ret-=1000;
-return ret;
+    rate(): number {
+        let ret = 100;
+
+        //too far appart.
+        if (this.maxFretDistence > 5) ret -= 1000;
+
+//all at end of neck
+if(this.maxFret < 4) ret+= 100;
+
+        return ret;
     }
 
     static New(fretPositions: number[]) {

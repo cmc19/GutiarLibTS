@@ -9,3 +9,10 @@ export * from './Scale';
 // export * from './UI/TabEditor';
 // export * from './UI/TabView';
 export * from './UI/UI';
+
+
+import * as u from './Util/Array';
+
+export module util {
+    export var orderBy = u.orderBy;
+}

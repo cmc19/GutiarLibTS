@@ -22,7 +22,9 @@ function buildChord(name) {
     chordResults.p4.forEach(function (x) { return neck.addStrumMarker(x).attr('fill', 'blue').attr('opacity', .60); });
     chordResults.p7.forEach(function (x) { return neck.addStrumMarker(x).attr('fill', 'green').attr('opacity', .33); });
     var strums = scale.getStrumList(name);
-    strums.filter(function (x) { return x.rate() > 0; }).forEach(function (strum) {
+    strums = strums.filter(function (x) { return x.rate() > 0; });
+    strums = G.util.orderBy(strums, function (x) { return 0 - x.rate(); });
+    strums.forEach(function (strum) {
         var strumDiv = document.createElement('div');
         strumDiv.classList.add('strumDiv');
         var span = document.createElement('span');
