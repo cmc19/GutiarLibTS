@@ -15,6 +15,8 @@ console.log(scale);
 
 
 function buildChord(name: G.MusicNoteName) {
+
+    console.time( G.noteMath.getNoteNameAsString(name));
     let chordResults = scale.getFretInfo(name);
     console.log(chordResults);
 
@@ -56,6 +58,7 @@ function buildChord(name: G.MusicNoteName) {
     var clearFix = document.createElement('div');
     clearFix.classList.add('clearfix');
     div.appendChild(clearFix);
+    console.timeEnd( G.noteMath.getNoteNameAsString(name));
 }
 
 console.log('buildChord');
@@ -69,6 +72,12 @@ buildChord(G.MusicNoteName.C);
 buildChord(G.MusicNoteName.F);
 buildChord(G.MusicNoteName.B);
 
+window['buildChord'] = buildChord;
+window['buildChordTest'] = () => {
+    console.profile();
+    buildChord(G.MusicNoteName.D);
+console.profileEnd();
+}
 
 
 //

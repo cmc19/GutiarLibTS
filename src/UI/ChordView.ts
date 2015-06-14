@@ -37,8 +37,13 @@ export class ChordView extends BaseUI {
     }
 
     private _drawParts() {
-        this._drawStrings();
-        this._drawFrets();
+
+        let d = this.draw;
+        let ps = [];
+        this._drawStrings(ps);
+        this._drawFrets(ps);
+        d.path(ps.join(' '));
+
         this._drawFingerPositions();
         this._resize();
     }
@@ -49,27 +54,27 @@ export class ChordView extends BaseUI {
         this.draw.setSize(s, f);
     }
 
-    private _drawStrings() {
+    private _drawStrings(ps:string[]) {
         let size = this.size;
         let strum = this.strum;
-        let d = this.draw;
         let f = size.fretSeperation;
         repeat(this.stringCount, s=> {
             let x = this.stringX(s);
             let line = pathString(x, f, x, this.lastFretY());
-            d.path(line);
+            ps.push(line);
         });
     }
 
-    private _drawFrets() {
+    private _drawFrets(ps:string[]) {
         let size = this.size;
         let strum = this.strum;
-        let d = this.draw;
+
         repeat(this.fretCount, f=> {
             let y = this.fretY(f);
-            let line = pathString(size.stringSeperation, y, this.lastStringX(), y);
-            d.path(line);
+            ps.push( pathString(size.stringSeperation, y, this.lastStringX(), y)) ;
         });
+        //d.path(ps.join(' '));
+
     }
 
     private lastStringX() {

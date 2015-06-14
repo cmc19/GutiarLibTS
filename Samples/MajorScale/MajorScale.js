@@ -6,6 +6,7 @@ var scale = new G.MajorScale(myGuitar);
 window['scale'] = scale;
 console.log(scale);
 function buildChord(name) {
+    console.time(G.noteMath.getNoteNameAsString(name));
     var chordResults = scale.getFretInfo(name);
     console.log(chordResults);
     var div = document.createElement('div');
@@ -38,6 +39,7 @@ function buildChord(name) {
     var clearFix = document.createElement('div');
     clearFix.classList.add('clearfix');
     div.appendChild(clearFix);
+    console.timeEnd(G.noteMath.getNoteNameAsString(name));
 }
 console.log('buildChord');
 buildChord(G.MusicNoteName.D);
@@ -47,4 +49,10 @@ buildChord(G.MusicNoteName.E);
 buildChord(G.MusicNoteName.C);
 buildChord(G.MusicNoteName.F);
 buildChord(G.MusicNoteName.B);
+window['buildChord'] = buildChord;
+window['buildChordTest'] = function () {
+    console.profile();
+    buildChord(G.MusicNoteName.D);
+    console.profileEnd();
+};
 //
