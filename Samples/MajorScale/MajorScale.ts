@@ -59,7 +59,7 @@ function buildChord(name: G.MusicNoteName) {
         strumDiv.addEventListener('click', () => {
             neck.clearStrum();
             neck.drawStrum(strum);
-        })
+        });
         strumDiv.appendChild(span);
 
     });
