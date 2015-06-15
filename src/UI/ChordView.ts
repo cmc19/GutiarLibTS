@@ -12,7 +12,7 @@ interface ISize {
 
 export class ChordView extends BaseUI {
 
-    private showLetters: boolean = false;
+    private _showLetters: boolean = false;
 
     private size: ISize = {
         stringSeperation: 8,
@@ -55,6 +55,9 @@ export class ChordView extends BaseUI {
     private _resize() {
         let s = this.lastStringX() + this.size.stringSeperation
         let f = this.lastFretY() + this.size.fretSeperation;
+        if (this._showLetters) {
+            f += this.size.fretSeperation;
+        }
         this.draw.setSize(s, f);
     }
 
@@ -116,20 +119,27 @@ export class ChordView extends BaseUI {
     }
 
     private _drawLetters() {
-        if (this.showLetters) {
+        if (this._showLetters) {
 
             let d = this.draw;
-                let strum = this.strum;
+            let strum = this.strum;
 
+            let names = strum.getNames();
             repeat(this.stringCount, s=> {
                 let x = this.stringX(s);
                 let y = this.fretY(this.fretCount + 1);
 
-
+                d.text(x, y, names[s]);
 
             });
 
         }
+    }
+
+    showLetters() {
+        this._showLetters = false;
+        this._drawLetters();
+        this._resize();
     }
 
     scale(x: number) {

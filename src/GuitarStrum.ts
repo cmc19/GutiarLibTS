@@ -15,7 +15,7 @@ export class GuitarStrum extends Strum {
     }
 
 
-    names(): string[] {
+    getNames(): string[] {
         let g = this.guitar;
         var a = [];
         let idx = 0;

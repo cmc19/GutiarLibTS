@@ -59,6 +59,7 @@ function buildChord(name: G.MusicNoteName) {
         strumDiv.addEventListener('click', () => {
             neck.clearStrum();
             neck.drawStrum(strum);
+            chord.showLetters();
         });
 
         chord.scale(1.0);

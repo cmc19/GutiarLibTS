@@ -39,6 +39,7 @@ function buildChord(name) {
         strumDiv.addEventListener('click', function () {
             neck.clearStrum();
             neck.drawStrum(strum);
+            chord.showLetters();
         });
         chord.scale(1.0);
         strumDiv.appendChild(span);
