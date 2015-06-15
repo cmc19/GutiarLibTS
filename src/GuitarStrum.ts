@@ -7,7 +7,7 @@ export class GuitarStrum extends Strum {
 
     constructor(guitar: Guitar, positions: number[]) {
         super(positions);
-
+        this._gutiar = guitar;
     }
 
     public get guitar(): Guitar {
@@ -15,7 +15,7 @@ export class GuitarStrum extends Strum {
     }
 
 
-    getNames(): string[] {
+    getFullNames(): string[] {
         let g = this.guitar;
         var a = [];
         let idx = 0;
@@ -23,6 +23,22 @@ export class GuitarStrum extends Strum {
             if (p != undefined) {
                 var s = g.strings[idx];
                 a.push(s.noteAtFret(p).fullName);
+            } else {
+                a.push('x');
+            }
+            idx++;
+        }
+        return a;
+    }
+
+    getNames():string[]{
+        let g = this.guitar;
+        var a = [];
+        let idx = 0;
+        for (let p of this.positions) {
+            if (p != undefined) {
+                var s = g.strings[idx];
+                a.push(s.noteAtFret(p).name);
             } else {
                 a.push('x');
             }

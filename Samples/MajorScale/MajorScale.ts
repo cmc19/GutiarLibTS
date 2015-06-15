@@ -43,7 +43,12 @@ function buildChord(name: G.MusicNoteName) {
     strums = G.util.orderBy(strums, x=> 0 - x.rate());
 
     //Comment out below to include chords that skip string.
-    strums = strums.filter(x=>x.skipCount == 0 );
+    strums = strums.filter(x=> x.skipCount == 0);
+
+
+
+    let chordViewSize = G.ChordView.DefaultSize;
+    chordViewSize = G.ChordView.scaleSize(1.4);
 
     strums.forEach(strum=> {
         let strumDiv = document.createElement('div');
@@ -54,15 +59,14 @@ function buildChord(name: G.MusicNoteName) {
 
         let div2 = document.createElement('div');
         strumDiv.appendChild(div2);
-        let chord = new G.ChordView(strum, div2);
+        let chord = new G.ChordView(strum, div2,chordViewSize);
 
+        chord.showLetters();
         strumDiv.addEventListener('click', () => {
             neck.clearStrum();
             neck.drawStrum(strum);
-            chord.showLetters();
         });
 
-        chord.scale(1.0);
         strumDiv.appendChild(span);
 
     });

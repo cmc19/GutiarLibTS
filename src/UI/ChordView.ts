@@ -4,7 +4,9 @@ import * as R from "Raphael";
 import { Guitar } from "../Guitar";
 import {BaseUI, pathString, repeat} from './BaseUI';
 import {GuitarStrum} from '../GuitarStrum';
-interface ISize {
+
+
+export interface IChordViewSize {
     stringSeperation: number;
     fretSeperation: number;
     circleRadius: number;
@@ -12,13 +14,30 @@ interface ISize {
 
 export class ChordView extends BaseUI {
 
+    public static get DefaultSize(): IChordViewSize {
+        return {
+            stringSeperation: 8,
+            fretSeperation: 10,
+            circleRadius: 3
+        };
+    }
+
+    /**
+     * @param  {number}            x [description]
+     * @param  {IChordViewSize} s defaults to the chord view.
+     * @return {IChordViewSize}      [description]
+     */
+    static scaleSize(x: number, s: IChordViewSize = ChordView.DefaultSize): IChordViewSize {
+        s.circleRadius *= x;
+        s.fretSeperation *= x;
+        s.stringSeperation *= x;
+
+        return s;
+    }
+
     private _showLetters: boolean = false;
 
-    private size: ISize = {
-        stringSeperation: 8,
-        fretSeperation: 10,
-        circleRadius: 3
-    };
+    private _size: IChordViewSize; // = ChordView.DefaultSize;
 
     private get stringCount(): number {
         return this.strum.positions.length;
@@ -30,8 +49,9 @@ export class ChordView extends BaseUI {
         return r + 1 /* open fret */;
     }
 
-    constructor(private strum: GuitarStrum, ele: HTMLElement = null) {
+    constructor(private strum: GuitarStrum, ele: HTMLElement = null, size: IChordViewSize = ChordView.DefaultSize) {
         super(ele);
+        this._size = size;
         this.draw = Raphael(this.element, 1, 1);
 
         this._drawParts();
@@ -53,16 +73,16 @@ export class ChordView extends BaseUI {
     }
 
     private _resize() {
-        let s = this.lastStringX() + this.size.stringSeperation
-        let f = this.lastFretY() + this.size.fretSeperation;
+        let s = this.lastStringX() + this._size.stringSeperation
+        let f = this.lastFretY() + this._size.fretSeperation;
         if (this._showLetters) {
-            f += this.size.fretSeperation;
+            f += this._size.fretSeperation;
         }
         this.draw.setSize(s, f);
     }
 
     private _drawStrings(ps: string[]) {
-        let size = this.size;
+        let size = this._size;
         let strum = this.strum;
         let f = size.fretSeperation;
         repeat(this.stringCount, s=> {
@@ -73,7 +93,7 @@ export class ChordView extends BaseUI {
     }
 
     private _drawFrets(ps: string[]) {
-        let size = this.size;
+        let size = this._size;
         let strum = this.strum;
 
         repeat(this.fretCount, f=> {
@@ -90,14 +110,14 @@ export class ChordView extends BaseUI {
 
     private stringX(strIdx: number) {
         strIdx = (this.stringCount - 1) - strIdx;
-        return this.size.stringSeperation * (strIdx + 1)
+        return this._size.stringSeperation * (strIdx + 1)
     }
 
     private fretY(fretIdx: number): number {
-        return this.size.fretSeperation * (fretIdx + 1)
+        return this._size.fretSeperation * (fretIdx + 1)
     }
     private fretYMiddle(fretIdx: number): number {
-        return this.fretY(fretIdx) - (this.size.fretSeperation / 2);
+        return this.fretY(fretIdx) - (this._size.fretSeperation / 2);
     }
 
     private lastFretY() {
@@ -111,7 +131,7 @@ export class ChordView extends BaseUI {
             let f = this.strum.positions[s];
             if (f === undefined) return;
             let x = this.stringX(s);
-            let circle = d.circle(x, this.fretYMiddle(f), this.size.circleRadius);
+            let circle = d.circle(x, this.fretYMiddle(f), this._size.circleRadius);
             if (f !== 0) {
                 circle.attr('fill', 'black');
             }
@@ -127,9 +147,9 @@ export class ChordView extends BaseUI {
             let names = strum.getNames();
             repeat(this.stringCount, s=> {
                 let x = this.stringX(s);
-                let y = this.fretY(this.fretCount + 1);
+                let y = this.fretYMiddle(this.fretCount + 1);
 
-                d.text(x, y, names[s]);
+                d.text(x, y - this._size.fretSeperation, names[s]);
 
             });
 
@@ -137,20 +157,23 @@ export class ChordView extends BaseUI {
     }
 
     showLetters() {
-        this._showLetters = false;
+        this._showLetters = true;
         this._drawLetters();
         this._resize();
     }
 
+    /**
+     * Scales all contents. Note that this is expensive. Try to do this in the constructor.
+     * @param  {number} x [description]
+     */
     scale(x: number) {
         if (x === 1) return;
         this.draw.clear();
-        let s = this.size;
-        s.circleRadius *= x;
-        s.fretSeperation *= x;
-        s.stringSeperation *= x;
+        let s = this._size;
+        this._size = ChordView.scaleSize(x, s);
         this._drawParts();
     }
+
 
 
 }
