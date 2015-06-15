@@ -4,7 +4,6 @@ let uu = undefined;
 
 let streetsDiv = document.getElementById('wtshnn');
 let guitar = G.Guitar.GetNormalGuitar();
-let tabView = new G.TabView(streetsDiv, guitar);
 
 let gs = x=> guitar.getStrum(x);
 
@@ -28,3 +27,5 @@ streets.addStrum(gs([uu, uu, 11, uu, uu, uu]));
 streets.addStrum(gs([uu, uu, 12, uu, uu, uu]));
 streets.addStrum(gs([uu, uu, 11, uu, uu, uu]));
 streets.addStrum(gs([uu, 10, uu, uu, uu, uu]));
+
+let tabView = window['tabview'] = new G.TabView(streetsDiv, streets);

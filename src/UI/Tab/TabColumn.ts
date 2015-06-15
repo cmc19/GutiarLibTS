@@ -2,10 +2,16 @@ import * as R from "Raphael";
 import {TabView} from '../TabView';
 import {pathString} from '../BaseUI';
 import {TabCell} from './TabCell';
+import {TabPart} from '../../TabDocument';
+
 export class TabColumn {
     cells: TabCell[] = [];
     tabView: TabView;
     index: number;
+
+    get part():TabPart{
+        return this.tabView.document.parts.elementAtIndex(this.index);
+    }
 
     get hasSelectedCell(): boolean {
         return this.cells.filter(x=> x.isSelected).length !== 0;

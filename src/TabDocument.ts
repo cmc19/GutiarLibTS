@@ -16,9 +16,9 @@ export class TabDocument {
     parts: LinkedList<TabPart> = new LinkedList<TabPart>();
     guitar: Guitar;
 
-get partCount(){
-    return this.parts.count;
-}
+    get partCount() {
+        return this.parts.count;
+    }
 
     constructor(g: Guitar) {
         this.guitar = g;
