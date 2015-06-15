@@ -11,7 +11,7 @@ export enum TabPartType {
 
 
 export class TabDocument {
-    
+
 
     parts: LinkedList<TabPart> = new LinkedList<TabPart>();
     guitar: Guitar;
