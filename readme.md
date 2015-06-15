@@ -2,7 +2,7 @@
 
 ##Types##
 
-* `Guitar` *Models a guitar, its strings, the tuning, and the available frets. Everything builds off of this class *
+* `Guitar` _Models a guitar, its strings, the tuning, and the available frets. Everything builds off of this class_
 * `GuitarString` *Models single guitar string and how its tuned*
 * `Strum`
   * `GuitarStrum`
