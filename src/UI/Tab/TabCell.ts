@@ -71,6 +71,8 @@ export class TabCell {
         this.bindEvents();
     }
 
+
+
     private bindEvents() {
         let onClick = () => this.click();
         this.elements.click(onClick);
