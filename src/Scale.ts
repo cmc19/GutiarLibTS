@@ -1,8 +1,10 @@
 import {MusicNoteName, noteMath} from './MusicNote';
 import {Guitar} from './Guitar';
-import {Strum} from './Strum';
+import {GuitarStrum} from './GuitarStrum';
 import {GuitarString, IFretInfo} from './GuitarString';
 import {findAllPossibleCombos} from './Util/Array';
+
+
 export class Scale {
 
     constructor(protected guitar: Guitar) {
@@ -30,14 +32,14 @@ export class MajorScale extends Scale {
         };
     }
 
-    getStrumList(note: MusicNoteName): Strum[] {
-        var results: Strum[] = [];
+    getStrumList(note: MusicNoteName): GuitarStrum[] {
+        var results: GuitarStrum[] = [];
         let info = this.getFretInfo(note);
 
-        let max = 10;
-        info.major = info.major.filter(x=> x.fretIndex <= 10);
-        info.p4 = info.p4.filter(x=> x.fretIndex <= 10);
-        info.p7 = info.p7.filter(x=> x.fretIndex <= 10);
+        let max = 12;
+        info.major = info.major.filter(x=> x.fretIndex <= max);
+        info.p4 = info.p4.filter(x=> x.fretIndex <= max);
+        info.p7 = info.p7.filter(x=> x.fretIndex <= max);
 
         //2 major
         let majors = findAllPossibleCombos(info.major, 2, 3);
@@ -65,7 +67,7 @@ export class MajorScale extends Scale {
                 info.p4.forEach(p4=> {
                     let f = fic.clone();
                     if (f.add(p4) == false) return;
-                    results.push(f.getChord(this.guitar.stringCount));
+                    results.push(f.getChord(this.guitar));
                 });
             });
         });
@@ -106,8 +108,9 @@ export class StrumBuilder {
         return true;
     }
 
-    getChord(stringCount: number): Strum {
+    getChord(g:Guitar): GuitarStrum {
         let u = undefined;
+        let stringCount = g.stringCount
         let results = [];
         for (var x = 0; x < stringCount; x++) {
             let fi = this.list.filter(y=> y.stringIndex == x);
@@ -119,6 +122,6 @@ export class StrumBuilder {
 
         }
 
-        return Strum.New(results);
+        return new GuitarStrum(g,results);
     }
 }

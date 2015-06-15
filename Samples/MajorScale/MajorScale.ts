@@ -41,10 +41,10 @@ function buildChord(name: G.MusicNoteName) {
 
     strums = strums.filter(x=> x.rate() > 0);
     strums = G.util.orderBy(strums, x=> 0 - x.rate());
-    
-    //Comment out below to include chords that skip string. 
+
+    //Comment out below to include chords that skip string.
     strums = strums.filter(x=>x.skipCount == 0 );
-    
+
     strums.forEach(strum=> {
         let strumDiv = document.createElement('div');
         strumDiv.classList.add('strumDiv');
@@ -60,6 +60,8 @@ function buildChord(name: G.MusicNoteName) {
             neck.clearStrum();
             neck.drawStrum(strum);
         });
+
+        chord.scale(1.0);
         strumDiv.appendChild(span);
 
     });

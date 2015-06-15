@@ -1,6 +1,8 @@
 import { GuitarString, getGuitarStrings, IGuitarString,IFretInfo} from './GuitarString';
 import {hasFromObject} from './Util/Decorators';
 import {MusicNoteName} from './MusicNote';
+// import {Strum} from './Strum';
+import {GuitarStrum} from './GuitarStrum';
 
 @hasFromObject
 export class Guitar {
@@ -28,6 +30,12 @@ export class Guitar {
             str.getFretsWithNote(noteName, this.frets).forEach(x=>{results.push(x);});
         });
         return results;
+    }
+
+    getStrum(positions:number[]):GuitarStrum{
+        if(positions.length !== this.stringCount) throw "String Count does not match";
+
+        return new GuitarStrum(this, positions);
     }
 
     static fromObject(obj: IGuitar): Guitar {

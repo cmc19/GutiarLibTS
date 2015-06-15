@@ -2,9 +2,8 @@
 
 import * as R from "Raphael";
 import { Guitar } from "../Guitar";
-import {Strum} from '../Strum';
 import {BaseUI, pathString, repeat} from './BaseUI';
-
+import {GuitarStrum} from '../GuitarStrum';
 interface ISize {
     stringSeperation: number;
     fretSeperation: number;
@@ -12,6 +11,8 @@ interface ISize {
 }
 
 export class ChordView extends BaseUI {
+
+    private showLetters: boolean = false;
 
     private size: ISize = {
         stringSeperation: 8,
@@ -24,12 +25,12 @@ export class ChordView extends BaseUI {
     }
 
     private get fretCount(): number {
-        let r =  Math.max( 5, this.strum.maxFret);
-    //    console.log(r);
+        let r = Math.max(5, this.strum.maxFret);
+        //    console.log(r);
         return r + 1 /* open fret */;
     }
 
-    constructor(private strum: Strum, ele: HTMLElement = null) {
+    constructor(private strum: GuitarStrum, ele: HTMLElement = null) {
         super(ele);
         this.draw = Raphael(this.element, 1, 1);
 
@@ -45,6 +46,9 @@ export class ChordView extends BaseUI {
         d.path(ps.join(' '));
 
         this._drawFingerPositions();
+        this._drawLetters();
+
+        //Sizes SVG from 1x1 to correct size based on size data
         this._resize();
     }
 
@@ -54,7 +58,7 @@ export class ChordView extends BaseUI {
         this.draw.setSize(s, f);
     }
 
-    private _drawStrings(ps:string[]) {
+    private _drawStrings(ps: string[]) {
         let size = this.size;
         let strum = this.strum;
         let f = size.fretSeperation;
@@ -65,13 +69,13 @@ export class ChordView extends BaseUI {
         });
     }
 
-    private _drawFrets(ps:string[]) {
+    private _drawFrets(ps: string[]) {
         let size = this.size;
         let strum = this.strum;
 
         repeat(this.fretCount, f=> {
             let y = this.fretY(f);
-            ps.push( pathString(size.stringSeperation, y, this.lastStringX(), y)) ;
+            ps.push(pathString(size.stringSeperation, y, this.lastStringX(), y));
         });
         //d.path(ps.join(' '));
 
@@ -111,7 +115,25 @@ export class ChordView extends BaseUI {
         });
     }
 
+    private _drawLetters() {
+        if (this.showLetters) {
+
+            let d = this.draw;
+                let strum = this.strum;
+
+            repeat(this.stringCount, s=> {
+                let x = this.stringX(s);
+                let y = this.fretY(this.fretCount + 1);
+
+
+
+            });
+
+        }
+    }
+
     scale(x: number) {
+        if (x === 1) return;
         this.draw.clear();
         let s = this.size;
         s.circleRadius *= x;
@@ -119,4 +141,6 @@ export class ChordView extends BaseUI {
         s.stringSeperation *= x;
         this._drawParts();
     }
+
+
 }

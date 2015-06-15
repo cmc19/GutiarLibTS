@@ -27,8 +27,7 @@ get partCount(){
     addStrum(s: Strum, index?: number) {
         if (s.stringCount != this.guitar.strings.length)
             return;
-        var ts = new TabStrum();
-        ts.positions = s.positions;
+        var ts = new TabStrum(s.positions);
         this.parts.add(ts, index);
     }
 
@@ -71,8 +70,7 @@ export class TabStrum extends Strum implements TabPart {
     }
 
     static fromObject(obj: ITabStrum): TabStrum {
-        var ts = new TabStrum();
-        ts.positions = obj.positions;
+        var ts = new TabStrum(obj.positions);
         return ts;
     }
 }

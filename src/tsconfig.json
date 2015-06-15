@@ -13,6 +13,7 @@
         "./Browser.ts",
         "./Guitar.ts",
         "./GuitarString.ts",
+        "./GuitarStrum.ts",
         "./Index.ts",
         "./MusicNote.ts",
         "./Parser.ts",
@@ -33,6 +34,7 @@
         "./Util/Collections.ts",
         "./Util/Decorators.ts",
         "./Util/KeyManager.ts",
-        "./Util/SimpleEvent.ts"
+        "./Util/SimpleEvent.ts",
+        "./WellKnownChords.ts"
     ]
 }

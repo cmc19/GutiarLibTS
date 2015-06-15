@@ -1,6 +1,10 @@
 import {Guitar} from './Guitar';
 
 
+/**
+ * Base Strum Class.
+ * @abstract
+ */
 export class Strum {
     get stringCount(): number { return this.positions.length; }
     get maxFret(): number {
@@ -40,9 +44,13 @@ export class Strum {
         return result;
     }
 
-    positions: number[];
-
-    constructor() { }
+    get positions(): number[] {
+        return this._positions;
+    }
+    private _positions: number[];
+    constructor(positions: number[]) {
+        this._positions = positions;
+    }
 
     average(g: Guitar): number {
         var a = [];
@@ -57,20 +65,7 @@ export class Strum {
         return getAverage(a);
     }
 
-    names(g: Guitar): string[] {
-        var a = [];
-        let idx = 0;
-        for (let p of this.positions) {
-            if (p != undefined) {
-                var s = g.strings[idx];
-                a.push(s.noteAtFret(p).fullName);
-            } else {
-                a.push('x');
-            }
-            idx++;
-        }
-        return a;
-    }
+
 
     get skipCount(): number {
         let ret = 0;
@@ -102,22 +97,16 @@ export class Strum {
         return ret;
     }
 
+    /**
+     * @deprecated
+     */
     static New(fretPositions: number[]) {
-        var s = new Strum();
-
-        s.positions = fretPositions;
-
+        var s = new Strum(fretPositions);
         return s;
     }
 }
 
-export module WellKnownChords {
-    let x = undefined;
-    export var D = Strum.New([2, 3, 2, 0, x, x]);
-    export var A = Strum.New([0, 2, 2, 2, 0, x]);
-    export var C = Strum.New([0, 1, 0, 2, 3, x]);
-    export var E = Strum.New([0, 0, 1, 2, 2, 0]);
-}
+
 
 
 
