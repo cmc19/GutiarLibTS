@@ -19,6 +19,7 @@ var buffer = require('vinyl-buffer');
 var globby = require('globby');
 var through = require('through2');
 var tsify = require('tsify');
+var uglify = require('gulp-uglify');
 
 var transform = require('vinyl-transform');
 
@@ -39,11 +40,11 @@ var tsProject2 = ts.createProject({
 });
 
 
-gulp.task('default', ['samples-bundle','bundle1', 'bundle1']);
+gulp.task('default', ['build', 'samples2','bundle1', 'bundle1']);
 gulp.task('watch', ['default'], () => {
 
-    gulp.watch(['src/**/*.ts'], ['samples-bundle']);
-    gulp.watch(['Samples/**/*.ts'], ['samples-bundle']);
+    gulp.watch(['src/**/*.ts'], ['build','samples2']);
+    gulp.watch(['Samples/**/*.ts'], ['samples2']);
 
 });
 
@@ -89,58 +90,58 @@ gulp.task('clean',function(cb){
     del(['samples/**/*.js','out/**/*'],cb);
 })
 
-gulp.task('samples-build', ['build'], function() {
-    return gulp.src(['samples/**/*.ts'])
-        .pipe(ts(tsProject2)).js
-        .pipe(gulp.dest('Samples'));
-});
-
-gulp.task('samples-bundle', ['samples-build'], function() {
-    const taskPath = ['Samples/**/*.js'];
-
-
-    var files = glob.sync(taskPath[0]);
-
-    files.forEach(filepath => {
-        var bundledStream = through();
-        var fileParts = filepath.split('/');
-        var directory = fileParts.slice(0, fileParts.length - 1).join('/');
-        var filename = fileParts[fileParts.length - 1].replace('.js', '.out.js');
-
-        if (filename == 'app.js')
-            return;
-
-        if (filename.indexOf('.out.out.') !== -1) {
-            return;
-        }
-
-         console.log(`dir: ${directory} filename: ${filename}`);
-
-        bundledStream
-            .pipe(source(filename))
-            .pipe(buffer())
-            .pipe(gulp.dest(directory));
-
-        globby(taskPath, function(err, entries) {
-            if (err) {
-                bundledStream.emit('error', err);
-                return;
-            }
-
-            var b = browserify({
-                entries: [filepath],
-                debug: true,
-                paths: ['scripts'],
-                plugins:['tsify']
-
-            });
-            b.bundle().pipe(bundledStream);
-        });
-    });
-
-
-
-});
+// gulp.task('samples-build', ['build'], function() {
+//     return gulp.src(['samples/**/*.ts'])
+//         .pipe(ts(tsProject2)).js
+//         .pipe(gulp.dest('Samples'));
+// });
+//
+// gulp.task('samples-bundle', ['samples-build'], function() {
+//     const taskPath = ['Samples/**/*.js'];
+//
+//
+//     var files = glob.sync(taskPath[0]);
+//
+//     files.forEach(filepath => {
+//         var bundledStream = through();
+//         var fileParts = filepath.split('/');
+//         var directory = fileParts.slice(0, fileParts.length - 1).join('/');
+//         var filename = fileParts[fileParts.length - 1].replace('.js', '.out.js');
+//
+//         if (filename == 'app.js')
+//             return;
+//
+//         if (filename.indexOf('.out.out.') !== -1) {
+//             return;
+//         }
+//
+//          console.log(`dir: ${directory} filename: ${filename}`);
+//
+//         bundledStream
+//             .pipe(source(filename))
+//             .pipe(buffer())
+//             .pipe(gulp.dest(directory));
+//
+//         globby(taskPath, function(err, entries) {
+//             if (err) {
+//                 bundledStream.emit('error', err);
+//                 return;
+//             }
+//
+//             var b = browserify({
+//                 entries: [filepath],
+//                 debug: true,
+//                 paths: ['scripts'],
+//                 plugins:['tsify']
+//
+//             });
+//             b.bundle().pipe(bundledStream);
+//         });
+//     });
+//
+//
+//
+// });
 
 gulp.task('samples2', function() {
     const taskPath = ['./Samples/**/*.ts'];
@@ -167,6 +168,9 @@ gulp.task('samples2', function() {
         bundledStream
             .pipe(source(filename))
             .pipe(buffer())
+            .pipe(sm.init({loadMaps: true}))
+            .pipe(uglify())
+            .pipe(sm.write(directory))
             .pipe(gulp.dest(directory));
 
         globby(taskPath, function(err, entries) {

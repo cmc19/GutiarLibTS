@@ -1,4 +1,4 @@
-import * as G from '../../out/Index';
+import * as G from '../../src/Index';
 window['G'] = G;
 
 
