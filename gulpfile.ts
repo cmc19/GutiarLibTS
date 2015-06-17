@@ -170,7 +170,7 @@ gulp.task('samples2', function() {
             .pipe(buffer())
             .pipe(sm.init({loadMaps: true}))
             .pipe(uglify())
-            .pipe(sm.write(directory))
+            .pipe(sm.write('./'))
             .pipe(gulp.dest(directory));
 
         globby(taskPath, function(err, entries) {
