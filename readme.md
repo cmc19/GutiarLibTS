@@ -1,5 +1,7 @@
 #GuitarLib
 
+Samples <http://cmc19.github.io/GuitarLibTsSamples/>
+
 ##Types##
 
 * `Guitar` _Models a guitar, its strings, the tuning, and the available frets. Everything builds off of this class_
