@@ -6,15 +6,17 @@ import { TabView } from './TabView';
 import { Guitar } from "../Guitar";
 import {TabCell} from './Tab/TabCell';
 import {TabColumn} from './Tab/TabColumn';
+import {TabDocument} from '../TabDocument';
 
 export class TabEditor extends TabView {
     keys: KeyManager;
     private _onChange = SimpleEvent.New();
 
-    constructor(ele: HTMLElement, guitar: Guitar) {
-        super(ele, guitar);
+    constructor(ele: HTMLElement, td: TabDocument) {
+        super(ele, td);
         this.keys = new KeyManager(this.element);
         this.bindKeys();
+        this._allowSelect = true;
     }
 
     private bindKeys() {

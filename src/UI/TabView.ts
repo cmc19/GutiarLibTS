@@ -15,7 +15,7 @@ import {Strum} from '../Strum';
 
 export class TabView extends BaseUI {
 
-    protected allowSelect: boolean = false;
+    protected _allowSelect: boolean = false;
 
     private _document: TabDocument;
 
@@ -36,9 +36,14 @@ export class TabView extends BaseUI {
         return this.columns.filter(x=> x.hasSelectedCell)[0].cells
             .filter(x=> x.isSelected)[0];
     }
+
     public get guitar(): Guitar {
         return this.document.guitar;
     };
+
+    public get allowSelect() {
+        return this._allowSelect;
+    }
 
     protected _columnAdded = SimpleEvent.New<TabColumn>();
 
@@ -69,12 +74,16 @@ export class TabView extends BaseUI {
         this._drawStringLetters();
         this._drawStringVertLines();
         this._buildTabColumns();
-        var firstCell = this.columns[0].cells[0];
+        // var firstCell = this.columns[0].cells[0];
         //firstCell.setText('0');
         // firstCell.select();
+
+        this._calculateSize();
     }
 
     private _drawStringLines() {
+        //todo: make one path, keep refrence
+        
         let d = this.draw;
         let x = this.getStringStartX();
         repeat(this.stringCount, idx=> {
@@ -84,18 +93,25 @@ export class TabView extends BaseUI {
         });
     }
 
+    /**
+     * letters on left side
+     */
     private _drawStringLetters() {
         let d = this.draw;
         let x = this.getStringStartX() / 2;
         let g = this.guitar;
         repeat(this.stringCount, idx=> {
             let y = this.getStringY(idx);
-            console.log(y);
             let letter = d.text(x, y, g.strings[idx].OpenNoteName);
         });
     }
 
+    /**
+     * Vertical lines at start of tab
+     */
     private _drawStringVertLines() {
+        //todo: make one path, keep refrence
+
         let d = this.draw;
         let x = this.getStringStartX();
         let g = this.guitar;
@@ -148,8 +164,16 @@ export class TabView extends BaseUI {
             });
             x = x + ns;
         });
-
     }
+
+    private _calculateSize() {
+        //note that this points to the position after the last string
+        let y = this.getStringY(this.stringCount);
+
+
+        this.draw.setSize(300, y);
+    }
+
 
     unselectAll() {
         this.columns.forEach(x=> x.unselectAll());
@@ -172,4 +196,6 @@ export class TabView extends BaseUI {
     toString() {
         return "[object TabView]";
     }
+
+
 }

@@ -68,15 +68,17 @@ export class TabCell {
 
         this.createClickElement();
         this.createSelectElement();
-        this.bindEvents();
+        this._bindEvents();
     }
 
 
 
-    private bindEvents() {
+    private _bindEvents() {
+        if(this.tabView.allowSelect == false) return;
         let onClick = () => this.click();
         this.elements.click(onClick);
     }
+
     private createClickElement() {
         let d = this.draw;
         let x = this.x;
@@ -92,7 +94,7 @@ export class TabCell {
                 fill: 'white'
             });
         this.clickElement.toBack();
-        this.clickElement.click(() => { this.click() });
+        //this.clickElement.click(() => { this.click() });
     }
 
     private createSelectElement() {

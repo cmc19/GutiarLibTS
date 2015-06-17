@@ -76,9 +76,9 @@ module Tests {
 // var te = window['te'] = new G.TabEditor(<HTMLTextAreaElement>document.getElementById('tabEditor'));
 // te.initBlank();
 
-let tv = new G.TabEditor(document.getElementById('tabView'),myGuitar);
+// let tv = new G.TabEditor(document.getElementById('tabView'),myGuitar);
 
-window['tv']  = tv;
+// window['tv']  = tv;
 
 var td = window ['td'] = new G.TabDocument(myGuitar);
 
