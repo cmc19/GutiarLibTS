@@ -18,7 +18,7 @@ export class TabCell {
             this.backgroundElement,
             this.clickElement,
             this.selectElement
-        ]);
+        ].filter(x=>x!== null));
     }
 
 
@@ -58,15 +58,10 @@ export class TabCell {
         let y = this.y;
 
 
-        let text = this.textElement = d.text(x, y, " ").attr({
-            "font-size": 14
-        });
-        let box = text.getBBox();
-        this.backgroundElement = d.rect(box.x, box.y, box.width, box.height)
-            .attr('fill', 'white')
-            .attr('stroke', 'white');
-        text.toFront();
 
+
+
+        if (this.tabView.allowSelect == false) return;
 
         this.createClickElement();
         this.createSelectElement();
@@ -76,7 +71,7 @@ export class TabCell {
 
 
     private _bindEvents() {
-        if(this.tabView.allowSelect == false) return;
+        if (this.tabView.allowSelect == false) return;
         let onClick = () => this.click();
         this.elements.click(onClick);
     }
@@ -117,16 +112,28 @@ export class TabCell {
 
     private recalcBackground() {
         let box = this.textElement.getBBox();
-
+        if (this.backgroundElement === null) {
+            this.backgroundElement = this.draw.rect(box.x, box.y, box.width, box.height)
+                .attr('fill', 'white')
+                .attr('stroke', 'white');
+        }
         this.backgroundElement.attr({
             x: box.x,
             y: box.y,
             width: box.width,
             height: box.height
         });
+
+        this.textElement.toFront();
     }
 
     setText(str: string) {
+
+        if(this.textElement == null){
+            this.textElement = this.draw.text(this.x, this.y, " ").attr({
+                "font-size": 14
+            });
+        }
         this.textElement.attr({
             text: str
         });
