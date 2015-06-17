@@ -25,7 +25,7 @@ export class TabView extends BaseUI {
 
     size: TabViewSize = {
         stringSeperation: 20,
-        noteSpeperation: 18
+        noteSpeperation: 20
     };
 
     get stringCount(): number {
@@ -83,12 +83,12 @@ export class TabView extends BaseUI {
 
     private _drawStringLines() {
         //todo: make one path, keep refrence
-        
+
         let d = this.draw;
         let x = this.getStringStartX();
         repeat(this.stringCount, idx=> {
             let y = this.getStringY(idx);
-            let line = pathString(x, y, 300, y);
+            let line = pathString(x, y, 1000, y);
             d.path(line);
         });
     }
@@ -166,12 +166,16 @@ export class TabView extends BaseUI {
         });
     }
 
+    private get rightX() {
+        let x = this.columns[this.columns.length - 1].topCell.x + this.size.noteSpeperation;
+        return x;
+    }
+
     private _calculateSize() {
         //note that this points to the position after the last string
         let y = this.getStringY(this.stringCount);
 
-
-        this.draw.setSize(300, y);
+        this.draw.setSize(this.rightX, y);
     }
 
 
@@ -194,8 +198,48 @@ export class TabView extends BaseUI {
     }
 
     toString() {
-        return "[object TabView]";
+
+        let array = this.toArray();
+
+        let lines = [];
+
+        repeat(this.stringCount, idx=> lines[idx] = []);
+
+        array.forEach(a=> {
+            let longest = 0;
+            a.forEach(x=> {
+                if (longest < x.length)
+                    longest = x.length;
+            });
+
+            repeat(this.stringCount, idx=> {
+                let p = a[idx];
+                if (p == undefined || p==' ') p = '';
+                lines[idx].push(lpad(longest, '-----', p));
+            });
+
+            repeat(this.stringCount, idx=> {
+                lines[idx].push('-');
+            });
+        });
+        let lines2 = [];
+        lines.forEach(l=> lines2.push(l.join('')));
+        return lines2.join('\n');
+
     }
 
 
+}
+
+
+function lpad(length, pad, str) {
+    if (length < this.length) return str;
+
+    pad = pad || ' ';
+
+    while (str.length < length) {
+        str = pad + str;
+    }
+
+    return str.substr(-length);
 }

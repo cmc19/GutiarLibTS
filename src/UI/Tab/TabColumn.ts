@@ -40,5 +40,8 @@ export class TabColumn {
         return this.tabView.columns[this.index + 1];
     }
 
+get topCell():TabCell{
+    return this.cells[0];
+}
 
 }

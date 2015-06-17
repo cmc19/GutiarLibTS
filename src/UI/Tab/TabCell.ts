@@ -38,11 +38,13 @@ export class TabCell {
     }
 
     constructor(
-        private x: number,
-        private y: number,
+        public x: number,
+        public y: number,
         private draw: RaphaelPaper,
         c: TabColumn,
         private index: number) {
+
+
         this.col = c;
 
         this.createElements();
