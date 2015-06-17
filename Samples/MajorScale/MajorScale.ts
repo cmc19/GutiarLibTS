@@ -1,7 +1,7 @@
 /// <reference path="../../typings/raphael/raphael.d.ts"/>
 
-import * as G from '../../out/Index';
-import '../../out/Browser';
+import * as G from '../../src/Index';
+import '../../src/Browser';
 
 
 

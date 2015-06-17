@@ -18,6 +18,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var globby = require('globby');
 var through = require('through2');
+var tsify = require('tsify');
 
 var transform = require('vinyl-transform');
 
@@ -130,8 +131,56 @@ gulp.task('samples-bundle', ['samples-build'], function() {
                 entries: [filepath],
                 debug: true,
                 paths: ['scripts'],
+                plugins:['tsify']
 
             });
+            b.bundle().pipe(bundledStream);
+        });
+    });
+
+
+
+});
+
+gulp.task('samples2', function() {
+    const taskPath = ['./Samples/**/*.ts'];
+
+
+    var files = glob.sync(taskPath[0]);
+
+    files.forEach(filepath => {
+        console.log(filepath);
+        var bundledStream = through();
+        var fileParts = filepath.split('/');
+        var directory = fileParts.slice(0, fileParts.length - 1).join('/');
+        var filename = fileParts[fileParts.length - 1].replace('.ts', '.out.js');
+
+        if (filename == 'app.js')
+            return;
+
+        if (filename.indexOf('.out.out.') !== -1) {
+            return;
+        }
+
+         console.log(`dir: ${directory} filename: ${filename}`);
+
+        bundledStream
+            .pipe(source(filename))
+            .pipe(buffer())
+            .pipe(gulp.dest(directory));
+
+        globby(taskPath, function(err, entries) {
+            if (err) {
+                bundledStream.emit('error', err);
+                return;
+            }
+
+            var b = browserify({
+                entries: [filepath],
+                debug: true,
+                paths: ['scripts']
+
+            }).plugin('tsify',{target:'es5'});
             b.bundle().pipe(bundledStream);
         });
     });
