@@ -18,7 +18,7 @@ export class TabCell {
             this.backgroundElement,
             this.clickElement,
             this.selectElement
-        ].filter(x=>x!== null));
+        ].filter(x=> x !== null));
     }
 
 
@@ -60,7 +60,7 @@ export class TabCell {
 
 
 
-console.log('this.tabView.allowSelect',this.tabView.allowSelect);
+        console.log('this.tabView.allowSelect', this.tabView.allowSelect);
         if (this.tabView.allowSelect == false) return;
 
         this.createClickElement();
@@ -71,7 +71,6 @@ console.log('this.tabView.allowSelect',this.tabView.allowSelect);
 
 
     private _bindEvents() {
-        if (this.tabView.allowSelect == false) return;
         let onClick = () => this.click();
         this.elements.click(onClick);
     }
@@ -91,7 +90,6 @@ console.log('this.tabView.allowSelect',this.tabView.allowSelect);
                 fill: 'white'
             });
         this.clickElement.toBack();
-        //this.clickElement.click(() => { this.click() });
     }
 
     private createSelectElement() {
@@ -110,13 +108,17 @@ console.log('this.tabView.allowSelect',this.tabView.allowSelect);
             .attr('opacity', .1);
     }
 
-    private recalcBackground() {
-        let box = this.textElement.getBBox();
+    private buildBackgroundElement(){
         if (this.backgroundElement === null) {
             this.backgroundElement = this.draw.rect(box.x, box.y, box.width, box.height)
                 .attr('fill', 'white')
                 .attr('stroke', 'white');
         }
+    }
+
+    private recalcBackground() {
+        let box = this.textElement.getBBox();
+this.buildBackgroundElement();
         this.backgroundElement.attr({
             x: box.x,
             y: box.y,
@@ -129,7 +131,7 @@ console.log('this.tabView.allowSelect',this.tabView.allowSelect);
 
     setText(str: string) {
 
-        if(this.textElement == null){
+        if (this.textElement == null) {
             this.textElement = this.draw.text(this.x, this.y, " ").attr({
                 "font-size": 14
             });
@@ -151,16 +153,23 @@ console.log('this.tabView.allowSelect',this.tabView.allowSelect);
 
     isSelected: boolean = false;
     select() {
+        this.buildBackgroundElement();
+
         this.tabView.unselectAll();
         this.isSelected = true;
+
         this.backgroundElement.attr('stroke', 'blue');
         this.selectElement.attr('opacity', 1);
     }
 
     unselect() {
         this.isSelected = false;
-        this.backgroundElement.attr('stroke', 'white');
         this.selectElement.attr('opacity', '0');
+
+        if(this.backgroundElement === null)
+            return;
+        
+        this.backgroundElement.attr('stroke', 'white');
     }
 
     private click() {
