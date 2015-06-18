@@ -19,7 +19,7 @@ export class TabEditor extends TabView {
     constructor(ele: HTMLElement, td: TabDocument) {
         super(ele, td);
 
-
+this.initTabDocEvents();
 
         if (td.partCount == 0) {
             td.addStrum(td.guitar.getBlankStrum())
@@ -33,6 +33,7 @@ export class TabEditor extends TabView {
     }
 
     private partAddedToDocument() {
+        console.log('partAddedToDocument');
         this._buildTabColumns();
     }
 

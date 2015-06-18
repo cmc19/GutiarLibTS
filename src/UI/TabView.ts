@@ -137,15 +137,22 @@ export class TabView extends BaseUI {
         let ns = this.size.noteSpeperation;
         let x = ns + this.getStringStartX();
 
+        console.log(`TabView._buildTabColumns, partCount${this.document.partCount}`);
+
         repeat(this.document.partCount, (colIndex) => {
+
+            console.log(`   this.columns.length < ${colIndex} = ${this.columns.length < colIndex}`)
+
             // already created;
             if (this.columns.length < colIndex) {
+                console.log(`    Already Created ${colIndex}`)
+
                 let column = this.columns[colIndex];
                 column.refresh();
                 return;
             } else {
 
-
+                console.log(`    create ${colIndex}`);
                 let column = new TabColumn(this.draw, this, colIndex);
                 this._addColumn(column);
 
@@ -158,6 +165,7 @@ export class TabView extends BaseUI {
                     let y = this.getStringY(idx);
                     let cell = column.defineCell(x, y, idx);
 
+//TODO: the following needs to move to TabCell:
                     if (part.type == TabPartType.Strum) {
                         let p = <TabStrum>part;
                         let pos = p.positions[idx];
@@ -245,7 +253,7 @@ export class TabView extends BaseUI {
 }
 
 
-function lpad(length, pad, str:string):string {
+function lpad(length, pad, str: string): string {
     if (length < this.length) return str;
 
     pad = pad || ' ';

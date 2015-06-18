@@ -168,9 +168,9 @@ gulp.task('samples2', function() {
         bundledStream
             .pipe(source(filename))
             .pipe(buffer())
-            .pipe(sm.init({loadMaps: true}))
-            .pipe(uglify())
-            .pipe(sm.write('./'))
+            // .pipe(sm.init({loadMaps: true}))
+            // .pipe(uglify())
+            // .pipe(sm.write('./'))
             .pipe(gulp.dest(directory));
 
         globby(taskPath, function(err, entries) {
@@ -183,7 +183,8 @@ gulp.task('samples2', function() {
                 entries: [filepath],
                 debug: true,
                 paths: ['scripts'],
-                noParse:['lodash.js']
+                noParse:['lodash.js'],
+                standalone: 'GLib'
 
             }).plugin('tsify',{target:'es5'});
             b.bundle().pipe(bundledStream);
