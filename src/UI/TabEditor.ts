@@ -12,10 +12,13 @@ export class TabEditor extends TabView {
     keys: KeyManager;
     private _onChange = SimpleEvent.New();
 
+    public get allowSelect() {
+        return true;
+    }
+
     constructor(ele: HTMLElement, td: TabDocument) {
         super(ele, td);
 
-        this._allowSelect = true;
 
 
         if (td.partCount == 0) {
@@ -30,7 +33,7 @@ export class TabEditor extends TabView {
     }
 
     private partAddedToDocument() {
-
+        this._buildTabColumns();
     }
 
     private bindKeys() {

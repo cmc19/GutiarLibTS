@@ -15,7 +15,6 @@ import {Strum} from '../Strum';
 
 export class TabView extends BaseUI {
 
-    protected _allowSelect: boolean = false;
 
     private _document: TabDocument;
 
@@ -42,7 +41,7 @@ export class TabView extends BaseUI {
     };
 
     public get allowSelect() {
-        return this._allowSelect;
+        return false;
     }
 
     protected _columnAdded = SimpleEvent.New<TabColumn>();
@@ -132,36 +131,46 @@ export class TabView extends BaseUI {
         this._columnAdded.trigger(c);
     }
 
-    private _buildTabColumns() {
+    protected _buildTabColumns() {
         let d = this.draw;
         let g = this.guitar;
         let ns = this.size.noteSpeperation;
         let x = ns + this.getStringStartX();
 
         repeat(this.document.partCount, (colIndex) => {
-            let column = new TabColumn(this.draw, this, colIndex);
-            this._addColumn(column);
+            // already created;
+            if (this.columns.length < colIndex) {
+                let column = this.columns[colIndex];
+                column.refresh();
+                return;
+            } else {
 
-            let part = this.document.parts.elementAtIndex(colIndex);
+
+                let column = new TabColumn(this.draw, this, colIndex);
+                this._addColumn(column);
+
+                let part = this.document.parts.elementAtIndex(colIndex);
 
 
-            repeat(this.stringCount, idx=> {
+                repeat(this.stringCount, idx=> {
 
 
-                let y = this.getStringY(idx);
-                let cell = column.defineCell(x, y, idx);
+                    let y = this.getStringY(idx);
+                    let cell = column.defineCell(x, y, idx);
 
-                if (part.type == TabPartType.Strum) {
-                    let p = <TabStrum>part;
-                    let pos = p.positions[idx];
-                    if (pos != undefined) {
-                        cell.setText(pos.toString());
+                    if (part.type == TabPartType.Strum) {
+                        let p = <TabStrum>part;
+                        let pos = p.positions[idx];
+                        if (pos != undefined) {
+                            cell.setText(pos.toString());
+                        }
                     }
-                }
 
-                // cell.setText('X');
+                    // cell.setText('X');
 
-            });
+                });
+            }
+
             x = x + ns;
         });
     }
@@ -236,7 +245,7 @@ export class TabView extends BaseUI {
 }
 
 
-function lpad(length, pad, str) {
+function lpad(length, pad, str:string):string {
     if (length < this.length) return str;
 
     pad = pad || ' ';

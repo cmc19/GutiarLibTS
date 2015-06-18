@@ -9,7 +9,7 @@ export class TabColumn {
     tabView: TabView;
     index: number;
 
-    get part():TabPart{
+    get part(): TabPart {
         return this.tabView.document.parts.elementAtIndex(this.index);
     }
 
@@ -40,8 +40,12 @@ export class TabColumn {
         return this.tabView.columns[this.index + 1];
     }
 
-get topCell():TabCell{
-    return this.cells[0];
-}
+    get topCell(): TabCell {
+        return this.cells[0];
+    }
+
+    refresh() {
+
+    }
 
 }
