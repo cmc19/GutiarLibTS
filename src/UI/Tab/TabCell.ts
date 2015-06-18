@@ -108,8 +108,10 @@ export class TabCell {
             .attr('opacity', .1);
     }
 
-    private buildBackgroundElement(){
+    private buildBackgroundElement() {
         if (this.backgroundElement === null) {
+            let box = this.textElement.getBBox();
+
             this.backgroundElement = this.draw.rect(box.x, box.y, box.width, box.height)
                 .attr('fill', 'white')
                 .attr('stroke', 'white');
@@ -118,7 +120,7 @@ export class TabCell {
 
     private recalcBackground() {
         let box = this.textElement.getBBox();
-this.buildBackgroundElement();
+        this.buildBackgroundElement();
         this.backgroundElement.attr({
             x: box.x,
             y: box.y,
@@ -166,9 +168,9 @@ this.buildBackgroundElement();
         this.isSelected = false;
         this.selectElement.attr('opacity', '0');
 
-        if(this.backgroundElement === null)
+        if (this.backgroundElement === null)
             return;
-        
+
         this.backgroundElement.attr('stroke', 'white');
     }
 
