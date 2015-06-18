@@ -14,9 +14,15 @@ export class TabEditor extends TabView {
 
     constructor(ele: HTMLElement, td: TabDocument) {
         super(ele, td);
+        
+        this._allowSelect = true;
+
+
+        if(td.partCount == 0){
+            td.addStrum(td.guitar.getBlankStrum())
+        }
         this.keys = new KeyManager(this.element);
         this.bindKeys();
-        this._allowSelect = true;
     }
 
     private bindKeys() {

@@ -25,8 +25,11 @@ export class TabDocument {
     }
 
     addStrum(s: Strum, index?: number) {
-        if (s.stringCount != this.guitar.strings.length)
+        if (s.stringCount != this.guitar.strings.length){
+            console.error('strum not added');
             return;
+
+        }
         var ts = new TabStrum(s.positions);
         this.parts.add(ts, index);
     }
