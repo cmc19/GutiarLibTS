@@ -182,7 +182,8 @@ gulp.task('samples2', function() {
             var b = browserify({
                 entries: [filepath],
                 debug: true,
-                paths: ['scripts']
+                paths: ['scripts'],
+                noParse:['lodash.js']
 
             }).plugin('tsify',{target:'es5'});
             b.bundle().pipe(bundledStream);

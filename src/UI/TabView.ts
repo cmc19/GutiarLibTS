@@ -167,6 +167,10 @@ export class TabView extends BaseUI {
     }
 
     private get rightX() {
+        if (this.columns.length == 0) {
+            console.warn('TabView.rightX: no columns');
+            return 0;
+        }
         let x = this.columns[this.columns.length - 1].topCell.x + this.size.noteSpeperation;
         return x;
     }
@@ -214,7 +218,7 @@ export class TabView extends BaseUI {
 
             repeat(this.stringCount, idx=> {
                 let p = a[idx];
-                if (p == undefined || p==' ') p = '';
+                if (p == undefined || p == ' ') p = '';
                 lines[idx].push(lpad(longest, '-----', p));
             });
 

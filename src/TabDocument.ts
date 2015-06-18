@@ -3,7 +3,7 @@ import {Strum} from './Strum';
 import {GuitarString} from './GuitarString';
 import {IMusicNote, IMusicNoteAdvanced, MusicNoteName, MusicNotes} from './MusicNote';
 import {LinkedList} from './Util/Collections';
-import {} from './Util/SimpleEvent';
+import {SimpleEvent} from './Util/SimpleEvent';
 
 export enum TabPartType {
     Strum
@@ -12,6 +12,7 @@ export enum TabPartType {
 
 export class TabDocument {
 
+    private _partAddedEvent = SimpleEvent.New();
 
     parts: LinkedList<TabPart> = new LinkedList<TabPart>();
     guitar: Guitar;
@@ -25,17 +26,18 @@ export class TabDocument {
     }
 
     addStrum(s: Strum, index?: number) {
-        if (s.stringCount != this.guitar.strings.length){
+        if (s.stringCount != this.guitar.strings.length) {
             console.error('strum not added');
             return;
 
         }
         var ts = new TabStrum(s.positions);
-        this.parts.add(ts, index);
+        this.addPart(ts);
     }
 
     addPart(part: TabPart) {
         this.parts.add(part);
+        this._partAddedEvent.trigger();
     }
 
     toObject(): ITabDocument {
@@ -56,6 +58,10 @@ export class TabDocument {
         });
 
         return td;
+    }
+
+    onPartAdded(fn:Function){
+        this._partAddedEvent.on(fn);
     }
 }
 
