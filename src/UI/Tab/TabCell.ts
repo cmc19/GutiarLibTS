@@ -6,15 +6,26 @@ import {TabColumn} from './TabColumn';
 
 
 export class TabCell {
+    private _textElement: RaphaelElement = null;
 
-    private textElement: RaphaelElement = null;
+
     private backgroundElement: RaphaelElement = null;
     private clickElement: RaphaelElement = null;
     private selectElement: RaphaelElement = null;
 
+    private get textElement(): RaphaelElement {
+        if (this._textElement === null) {
+            this._textElement = this.draw.text(this.x, this.y, " ").attr({
+                "font-size": 14
+            });
+        }
+
+        return this._textElement;
+    }
+
     private get elements(): RaphaelSet {
         return this.draw.set([
-            this.textElement,
+            this._textElement,//we dont want it to create. so use backing field.
             this.backgroundElement,
             this.clickElement,
             this.selectElement
@@ -51,7 +62,7 @@ export class TabCell {
     }
 
     private createElements() {
-        if (this.textElement !== null) return;
+        // if (this.textElement !== null) return;
 
         let d = this.draw;
         let x = this.x;
@@ -76,6 +87,7 @@ export class TabCell {
     }
 
     private createClickElement() {
+        console.log('TabCell.createClickElement');
         let d = this.draw;
         let x = this.x;
         let y = this.y;
@@ -132,12 +144,6 @@ export class TabCell {
     }
 
     setText(str: string) {
-
-        if (this.textElement == null) {
-            this.textElement = this.draw.text(this.x, this.y, " ").attr({
-                "font-size": 14
-            });
-        }
         this.textElement.attr({
             text: str
         });

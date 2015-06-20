@@ -19,7 +19,7 @@ export class TabEditor extends TabView {
     constructor(ele: HTMLElement, td: TabDocument) {
         super(ele, td);
 
-this.initTabDocEvents();
+        this.initTabDocEvents();
 
         if (td.partCount == 0) {
             td.addStrum(td.guitar.getBlankStrum())
@@ -71,8 +71,10 @@ this.initTabDocEvents();
         });
 
         repeat(10, idx=> {
+            //ABCZ
             k.bind(idx.toString(), (e) => {
                 e.preventDefault();
+                console.log(idx.toString() + ' key pressed', this)
                 this.selectedCell.appendText(idx.toString());
             });
         });

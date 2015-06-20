@@ -32,8 +32,9 @@ export class TabView extends BaseUI {
     }
 
     get selectedCell(): TabCell {
-        return this.columns.filter(x=> x.hasSelectedCell)[0].cells
-            .filter(x=> x.isSelected)[0];
+        let cols = this.columns.filter(x=> x.hasSelectedCell);
+        if (cols.length == 0) return;
+        cols[0].cells.filter(x=> x.isSelected)[0];
     }
 
     public get guitar(): Guitar {
@@ -165,12 +166,20 @@ export class TabView extends BaseUI {
                     let y = this.getStringY(idx);
                     let cell = column.defineCell(x, y, idx);
 
-//TODO: the following needs to move to TabCell:
+                    //TODO: the following needs to move to TabCell:
                     if (part.type == TabPartType.Strum) {
                         let p = <TabStrum>part;
                         let pos = p.positions[idx];
-                        if (pos != undefined) {
-                            cell.setText(pos.toString());
+                        if (pos != undefined || this.allowSelect) {
+                            // we want to add text always if allowSelect is enabled.
+                            // This allows us to create the binding boxes for the click events.
+
+                            if (pos == undefined) {
+                                cell.setText(" ");;
+                            }
+                            else {
+                                cell.setText(pos.toString());
+                            }
                         }
                     }
 
