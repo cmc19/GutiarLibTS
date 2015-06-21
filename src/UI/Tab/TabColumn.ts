@@ -37,7 +37,12 @@ export class TabColumn {
     }
 
     getRight(): TabColumn {
-        return this.tabView.columns[this.index + 1];
+        let col =  this.tabView.columns[this.index + 1];
+        if(col === undefined){
+            this.tabView.document.addStrum(this.tabView.guitar.getBlankStrum());
+            return this.tabView.columns[this.index + 1];
+        }
+        return col;
     }
 
     get topCell(): TabCell {

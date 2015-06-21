@@ -87,7 +87,6 @@ export class TabCell {
     }
 
     private createClickElement() {
-        console.log('TabCell.createClickElement');
         let d = this.draw;
         let x = this.x;
         let y = this.y;

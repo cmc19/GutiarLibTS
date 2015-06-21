@@ -34,7 +34,7 @@ export class TabView extends BaseUI {
     get selectedCell(): TabCell {
         let cols = this.columns.filter(x=> x.hasSelectedCell);
         if (cols.length == 0) return;
-        cols[0].cells.filter(x=> x.isSelected)[0];
+        return cols[0].cells.filter(x=> x.isSelected)[0];
     }
 
     public get guitar(): Guitar {
@@ -136,21 +136,20 @@ export class TabView extends BaseUI {
         let d = this.draw;
         let g = this.guitar;
         let ns = this.size.noteSpeperation;
-        let x = ns + this.getStringStartX();
+        var x = ns + this.getStringStartX();
 
         console.log(`TabView._buildTabColumns, partCount${this.document.partCount}`);
 
         repeat(this.document.partCount, (colIndex) => {
 
-            console.log(`   this.columns.length < ${colIndex} = ${this.columns.length < colIndex}`)
+            console.log(`   this.columns.length > ${colIndex} = ${this.columns.length > colIndex}`)
 
             // already created;
-            if (this.columns.length < colIndex) {
+            if (this.columns.length > colIndex) {
                 console.log(`    Already Created ${colIndex}`)
 
                 let column = this.columns[colIndex];
                 column.refresh();
-                return;
             } else {
 
                 console.log(`    create ${colIndex}`);
@@ -165,7 +164,7 @@ export class TabView extends BaseUI {
 
                     let y = this.getStringY(idx);
                     let cell = column.defineCell(x, y, idx);
-
+                    console.log(`defineCell(${x},${y},${idx})`);
                     //TODO: the following needs to move to TabCell:
                     if (part.type == TabPartType.Strum) {
                         let p = <TabStrum>part;
@@ -175,7 +174,8 @@ export class TabView extends BaseUI {
                             // This allows us to create the binding boxes for the click events.
 
                             if (pos == undefined) {
-                                cell.setText(" ");;
+                                cell.setText(" ");
+                                if (colIndex == 1) cell.setText('~');
                             }
                             else {
                                 cell.setText(pos.toString());
@@ -186,10 +186,12 @@ export class TabView extends BaseUI {
                     // cell.setText('X');
 
                 });
-            }
+            }//end not already created
 
             x = x + ns;
-        });
+        });//end repeat
+
+        this._calculateSize();
     }
 
     private get rightX() {
