@@ -71,7 +71,7 @@ export class TabCell {
 
 
 
-        console.log('this.tabView.allowSelect', this.tabView.allowSelect);
+        // console.log('this.tabView.allowSelect', this.tabView.allowSelect);
         if (this.tabView.allowSelect == false) return;
 
         this.createClickElement();
