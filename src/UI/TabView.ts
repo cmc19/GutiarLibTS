@@ -164,6 +164,7 @@ export class TabView extends BaseUI {
 
                     let y = this.getStringY(idx);
                     let cell = column.defineCell(x, y, idx);
+
                     // console.log(`defineCell(${x},${y},${idx})`);
                     //TODO: the following needs to move to TabCell:
                     if (part.type == TabPartType.Strum) {
@@ -181,6 +182,8 @@ export class TabView extends BaseUI {
                                 cell.setText(pos.toString());
                             }
                         }
+                    }else if (part.type == TabPartType.Line){
+                        cell.setText("|");
                     }
 
                     // cell.setText('X');

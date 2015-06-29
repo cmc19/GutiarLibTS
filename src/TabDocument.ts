@@ -6,7 +6,8 @@ import {LinkedList} from './Util/Collections';
 import {SimpleEvent} from './Util/SimpleEvent';
 
 export enum TabPartType {
-    Strum
+    Strum,
+    Line
 }
 
 
@@ -40,6 +41,10 @@ export class TabDocument {
         this._partAddedEvent.trigger();
     }
 
+    addLine(){
+        this.addPart(new TabLine());
+    }
+
     toObject(): ITabDocument {
         return {
             gutar: this.guitar.toObject(),
@@ -60,7 +65,7 @@ export class TabDocument {
         return td;
     }
 
-    onPartAdded(fn:Function){
+    onPartAdded(fn: Function) {
         this._partAddedEvent.on(fn);
     }
 }
@@ -81,6 +86,18 @@ export class TabStrum extends Strum implements TabPart {
     static fromObject(obj: ITabStrum): TabStrum {
         var ts = new TabStrum(obj.positions);
         return ts;
+    }
+}
+
+export class TabLine implements TabPart {
+    get type() {
+        return TabPartType.Line;
+    }
+
+    toObject() {
+        return {
+            type: this.type
+        };
     }
 }
 
